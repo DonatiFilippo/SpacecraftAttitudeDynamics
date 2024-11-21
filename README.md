@@ -3,7 +3,7 @@ Repository for the Project of the course Spacecraft Attitude Dynamics for the ye
 
 
 Worked on by:
-- Da Silva Esteban Azevedo
+- Azevedo Da Silva Esteban
 - Domenichelli Eleonora
 - Donati Filippo
 - Gavidia Pantoja Maria Paulina
