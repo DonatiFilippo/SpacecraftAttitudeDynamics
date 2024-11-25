@@ -1,0 +1,21 @@
+clc 
+close all
+clear all
+
+%% Data
+Iv = [0.07;0.055;0.025];
+
+I = diag(Iv);
+invI = inv(I);
+w0 = [0.45; 0.52; 0.55];
+A = [[1, 0, 0]; [0, sqrt(2)/2, sqrt(2)/2]; [0, -sqrt(2)/2, sqrt(2)/2]];
+IC.angles = [0, 0.0000001, 0]; %The system is smart and choose Euler rappresentation based on singularities
+env.R = 100000;
+env.G = 6.6743 × 10-11
+%% Sim config
+t0 = 0;
+tf = 10000;
+%% Simulation Init
+out = sim("Lab6.slx", "StartTime", "t0", "StopTime", "tf");
+
+%% Plot
