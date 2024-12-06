@@ -4,24 +4,24 @@ clear all
 
 % ORBIT DATA
 theta0 = 0;
-e = 0.1;
-a = 42000000;
-i = 0.5;
+e = 0.0005568;
+a = 6844;
+i = deg2rad(97.36);
 G = 6.6743E-11;
 Mt = 5.972E24;
-n = sqrt(G*Mt/a^3);
-T = 2*pi/n;
+T = 93.91*60;
+n = 2*pi/T;
 
 % KINEMATICS DATA
-Ix = 0.06;
-Iy = 0.08;
-Iz = 0.04;
-wx0 = 1E-6;
-wy0 = 1E-6;
-wz0 = n;
+Ix = 0.0823;
+Iy = 0.0633;
+Iz = 0.0317;
+wx0 = 0.45;
+wy0 = 0.52;
+wz0 = 0.55;
 
 % KINEMATCIS QUANTITIES
-J = diag([Ix, Iy, Iz]);
+J = diag([0.0823, 0.0633, 0.0317]);
 w0 = [wx0; wy0; wz0];
 ABN0 = diag([1, 1, 1]);
 wLN = [0; 0; n];
