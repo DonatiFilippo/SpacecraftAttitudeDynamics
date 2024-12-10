@@ -112,6 +112,41 @@ sens.gyro.gsensing = eye(3);
 
 % - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + -
 
+% Magentometer
+
+%% Actuator
+
+% Control Moment Gyroscope
+
+% Generic Data 
+
+
+% Gyro specific Data
+
+% +--------+
+% | Gyro 1 |
+% +--------+
+
+
+
+% +--------+
+% | Gyro 2 |
+% +--------+
+
+
+
+% +--------+
+% | Gyro 3 |
+% +--------+
+
+
+
+% +--------+
+% | Gyro 4 |
+% +--------+
+
+
+
 %% Intial Conditions
 
 IC.w0 = [1e-6; 1e-6; orb.n]; % [3x1] rad/s - Initial Angular rates
