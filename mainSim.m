@@ -43,7 +43,7 @@ env.dis.P = env.Fe/env.c; % [1x1] kg/(m*s^2) - Average pressure due to radiation
 orb.a = 42000000; % [1x1] m - Semi-major axis 
 orb.e = 0.1; % [1x1] - Eccentricity
 orb.i = 0; % [1x1] rad - Inclination
-orb.n = sqrt(6.6743E-11 * 5.972E24/(R^3)); % [1x1] rad/s - Mean orbital Velocity
+orb.n = sqrt(astroConstants(13)/(R^3)); % [1x1] rad/s - Mean orbital Velocity
 orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
 
 %% Satellite data
@@ -125,6 +125,9 @@ sens.gyro.gsensing = eye(3);
 % - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + -
 
 % Magentometer
+sens.mag.f = 10;% [Hz]
+sens.mag.SNR = 10^(70/20); % dB
+
 
 %% Actuator
 
