@@ -6,17 +6,21 @@
 % Donati Filippo 
 % Gavidia Pantoja Maria Paulina
 
-% We should consider to move the data generation into separare
+% We should consider to move the data generation into separate
 % sub-functions as this will greatly improve readability
 
 
-%% Falgs
+%% Flags
 
 flag.realsensors = 1; % Set to 1 to use real sensor models, with mesuring errors
 flag.sensverb = 0; % Set to 1 to augment the number of data collected from sensors
+flag.gg = 1; % Set to 1 to use gravity gradient perturbation
+flag.srp = 1; % Set to 1 to consider srp perturbation
 
 %% Environment Data
 
+env.c = astroConstants(5)*1000; % [1x1] m/s - Speed of light
+env.G = astroConstants(1); % [1x1] km^3/(kg*s^2) - Universal gravity constant
 % - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + %
 
 % Earth
@@ -24,12 +28,15 @@ flag.sensverb = 0; % Set to 1 to augment the number of data collected from senso
 env.Earth.n = 2*pi / (360*24*60*60); % [1x1] rad/2 - Earth mean Velocity
 env.Earth.R = astroConstants(23); % [1x1] Km - Radius of the Earth
 env.Earth.i = deg2rad(23.45); % [1x1] rad - Earth Rotation Axis Inclination
-
+env.Earth.mass = astroConstants(13)/env.G; % [1x1] kg - Earth mass
 % - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + %
 
 % Sun
 
 env.Sun.R = astroConstants(2); % [1x1] Km - Earth to Sun distance
+env.Sun.Fe = 1358; % [1x1] W/m^2 - Solar radiation intensity
+
+env.dis.P = env.Fe/env.c; % [1x1] kg/(m*s^2) - Average pressure due to radiation
 
 %% Satellite Orbit Data
 
@@ -44,6 +51,11 @@ orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
 sat.Iv = [0.06;0.08;0.04]; % [3x1] Kgm^2 - Pincipal Inertial Moments as a Vector
 sat.I = diag(sat.Iv); % [3x3] Kgm^2 - Inertia Matrix
 sat.invI = inv(sat.I); % [3x3] Kgm^2 - Inverse Inertia Matrix
+sat.n_b = [1, 0, 0; 0, 1, 0; -1, 0, 0; 0, -1, 0; 0, 0, 1; 0, 0, -1]'; % [3x6] - Vector normal to the each surface of satellite in body frame
+sat.A = [6*1e-2*ones(4,1); 4*1e-2*ones(2,1)]';% [1x6] m^2 - Surfaces (WRONG NUMBERS!!!)
+sat.rho_s = 0.5*ones(6,1); % [6x1] - Surfaces' diffuse reflection coefficients (WRONG NUMBERS!!!)
+sat.rho_d = 0.1*ones(1, 6); % [1x6] - Surfaces' specular reflection coefficients (WRONG NUMBERS!!!)
+sat.r_CM = [10, 0, 15; 0, 10, 15; -10, 0, -15; 0, -10, -15; 0, 0, 30; 0, 0, 0]*1e-2; % [6x3] m - Distance from centre panel to CM (WRONG NUMBERS!!!)
 
 %% Sensor Data
 
