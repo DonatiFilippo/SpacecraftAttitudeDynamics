@@ -16,6 +16,7 @@ flag.realsensors = 1; % Set to 1 to use real sensor models, with mesuring errors
 flag.sensverb = 0; % Set to 1 to augment the number of data collected from sensors
 flag.gg = 1; % Set to 1 to use gravity gradient perturbation
 flag.srp = 1; % Set to 1 to consider srp perturbation
+flag.mag = 1; % Set to 1 to consider magnetic field perturbation
 
 %% Environment Data
 
@@ -29,6 +30,9 @@ env.Earth.n = 2*pi / (360*24*60*60); % [1x1] rad/2 - Earth mean Velocity
 env.Earth.R = astroConstants(23); % [1x1] Km - Radius of the Earth
 env.Earth.i = deg2rad(23.45); % [1x1] rad - Earth Rotation Axis Inclination
 env.Earth.mass = astroConstants(13)/env.G; % [1x1] kg - Earth mass
+env.Earth.omega = 7.2921159 * 1e-5; % [1x1] rad/s - Earth angular velocity
+env.Earth.magInclination = deg2rad(11.5); % [1x1] rad - Magnetic field inclination
+env.mag.dgrf2020 = [-29404.8; -1450.9; 4652.5].*1e-9; % [3x1] Teslas - Magnetic field costants
 % - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + %
 
 % Sun
@@ -56,6 +60,7 @@ sat.A = [6*1e-2*ones(4,1); 4*1e-2*ones(2,1)]';% [1x6] m^2 - Surfaces (WRONG NUMB
 sat.rho_s = 0.5*ones(6,1); % [6x1] - Surfaces' diffuse reflection coefficients (WRONG NUMBERS!!!)
 sat.rho_d = 0.1*ones(1, 6); % [1x6] - Surfaces' specular reflection coefficients (WRONG NUMBERS!!!)
 sat.r_CM = [10, 0, 15; 0, 10, 15; -10, 0, -15; 0, -10, -15; 0, 0, 30; 0, 0, 0]*1e-2; % [6x3] m - Distance from centre panel to CM (WRONG NUMBERS!!!)
+sat.jB = [0.01; 0.05; 0.01];
 
 %% Sensor Data
 
