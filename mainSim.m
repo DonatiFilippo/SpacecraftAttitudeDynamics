@@ -40,14 +40,14 @@ env.mag.dgrf2020 = [-29404.8; -1450.9; 4652.5].*1e-9; % [3x1] Teslas - Magnetic 
 env.Sun.R = astroConstants(2); % [1x1] Km - Earth to Sun distance
 env.Sun.Fe = 1358; % [1x1] W/m^2 - Solar radiation intensity
 
-env.dis.P = env.Fe/env.c; % [1x1] kg/(m*s^2) - Average pressure due to radiation
+env.dis.P = env.Sun.Fe/env.c; % [1x1] kg/(m*s^2) - Average pressure due to radiation
 
 %% Satellite Orbit Data
 
 orb.a = 42000000; % [1x1] m - Semi-major axis 
 orb.e = 0.1; % [1x1] - Eccentricity
 orb.i = 0; % [1x1] rad - Inclination
-orb.n = sqrt(astroConstants(13)/(R^3)); % [1x1] rad/s - Mean orbital Velocity
+orb.n = sqrt(astroConstants(13)/(orb.a^3)); % [1x1] rad/s - Mean orbital Velocity
 orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
 
 %% Satellite data
