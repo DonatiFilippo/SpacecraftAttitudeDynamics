@@ -29,7 +29,8 @@ env.G = astroConstants(1); % [1x1] km^3/(kg*s^2) - Universal gravity constant
 env.Earth.n = 2*pi / (360*24*60*60); % [1x1] rad/2 - Earth mean Velocity
 env.Earth.R = astroConstants(23); % [1x1] Km - Radius of the Earth
 env.Earth.i = deg2rad(23.45); % [1x1] rad - Earth Rotation Axis Inclination
-env.Earth.mass = astroConstants(13)/env.G; % [1x1] kg - Earth mass
+env.Earth.mu = astroConstants(13);
+env.Earth.mass = env.Earth.mu/env.G; % [1x1] kg - Earth mass
 env.Earth.omega = 7.2921159 * 1e-5; % [1x1] rad/s - Earth angular velocity
 env.Earth.magInclination = deg2rad(11.5); % [1x1] rad - Magnetic field inclination
 env.mag.dgrf2020 = [-29404.8; -1450.9; 4652.5].*1e-9; % [3x1] Teslas - Magnetic field costants
@@ -49,6 +50,11 @@ orb.e = 0; % [1x1] - Eccentricity
 orb.i = 101; % [1x1] rad - Inclination
 orb.n = sqrt(astroConstants(13)/(orb.a^3)); % [1x1] rad/s - Mean orbital Velocity
 orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
+
+orb.W = -2.0647E14 * orb.a^(-7/2) * cos(orb.i) * time; % [1x1] degrees/day - RAAN (for e = 0)
+
+% IN GENERAL : orb.W = -3/2 * J2 * (env.Earth.R/orb.a)^2 * 1/(1 - orb.e^2) * sqrt(env.Earth.mu/orb.a^3) * cos(orb.i) * time; 
+
 
 %% Satellite data
 
