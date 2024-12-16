@@ -40,14 +40,14 @@ env.mag.dgrf2020 = [-29404.8; -1450.9; 4652.5].*1e-9; % [3x1] Teslas - Magnetic 
 env.Sun.R = astroConstants(2); % [1x1] Km - Earth to Sun distance
 env.Sun.Fe = 1358; % [1x1] W/m^2 - Solar radiation intensity
 
-env.dis.P = env.Sun.Fe/env.c; % [1x1] kg/(m*s^2) - Average pressure due to radiation
+env.dis.P = env.Fe/env.c; % [1x1] kg/(m*s^2) - Average pressure due to radiation
 
 %% Satellite Orbit Data
 
-orb.a = 20000; % [1x1] m - Semi-major axis 
-orb.e = 0; % [1x1] - Eccentricity
-orb.i = 101; % [1x1] rad - Inclination
-orb.n = sqrt(astroConstants(13)/(orb.a^3)); % [1x1] rad/s - Mean orbital Velocity
+orb.a = 42000000; % [1x1] m - Semi-major axis 
+orb.e = 0.1; % [1x1] - Eccentricity
+orb.i = 0; % [1x1] rad - Inclination
+orb.n = sqrt(astroConstants(13)/(R^3)); % [1x1] rad/s - Mean orbital Velocity
 orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
 
 %% Satellite data
@@ -60,7 +60,7 @@ sat.A = [6*1e-2*ones(4,1); 4*1e-2*ones(2,1)]';% [1x6] m^2 - Surfaces (WRONG NUMB
 sat.rho_s = 0.5*ones(6,1); % [6x1] - Surfaces' diffuse reflection coefficients (WRONG NUMBERS!!!)
 sat.rho_d = 0.1*ones(1, 6); % [1x6] - Surfaces' specular reflection coefficients (WRONG NUMBERS!!!)
 sat.r_CM = [10, 0, 15; 0, 10, 15; -10, 0, -15; 0, -10, -15; 0, 0, 30; 0, 0, 0]*1e-2; % [6x3] m - Distance from centre panel to CM (WRONG NUMBERS!!!)
-sat.jB = [0.01; 0.05; 0.01]; %!!!!!!!
+sat.jB = [0.01; 0.05; 0.01];
 
 %% Sensor Data
 
