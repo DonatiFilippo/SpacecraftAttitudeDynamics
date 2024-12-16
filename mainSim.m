@@ -79,7 +79,7 @@ sens.ss.ADC.bit = 10;
 sens.ss.fov = deg2rad(60); % Sensor FOV in radiants
 sens.ss.freq = 50; % Sampling Frequency in Hz
 sens.ss.accuracy = deg2rad(0.5); % Accuracy of sun sensor in radiants
-sens.ss.precision = deg2rad(0.1); % Precision of the sensor in radiats
+sens.ss.precision = deg2rad(0.1); % Precision of the sensor in radiants
 sens.ss.ADC.quanta = (2 * sens.ss.fov) / ((2)^(sens.ss.ADC.bit)); % ADC Quanta
 % Note: current notation assume that ADC quanta on Voltage is linearly
 % correlated with quantization of the angle. This isn't true, but good
