@@ -175,8 +175,8 @@ sens.mag.SNR = 10^(70/20); % dB
 
 %% Intial Conditions
 
-IC.w0 = [5; 10; 6]; % [3x1] rad/s - Initial Angular rates
-IC.angles = [0, 0.2, 0]; % [1x3] rad - Initial Euler Angles wrt ECI
+IC.w0 = [10; 15; 2]; % [3x1] rad/s - Initial Angular rates
+IC.angles = [1.4, 4, 2.3]; % [1x3] rad - Initial Euler Angles wrt ECI
 IC.theta = 0; % [1x1] rad - Initial true anomaly of the Spacecraft
 
 %% Simulation Options
