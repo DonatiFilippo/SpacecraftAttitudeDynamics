@@ -28,8 +28,8 @@ flag.mag = 1; % Set to 1 to consider magnetic field perturbation
 env.c = astroConstants(5)*1000; % [1x1] m/s - Speed of light
 env.G = astroConstants(1); % [1x1] km^3/(kg*s^2) - Universal gravity constant
 env.mag.dgrf2020 = [-29404.8; -1450.9; 4652.5].*1e-9; % [3x1] Teslas - Magnetic field costants
-env.atm.H = 60.828 * 1e3;
-env.atm.h0 = 450 * 1e3;
+env.atm.H = 60.828;
+env.atm.h0 = 450;
 env.atm.rho0 = 1.585 * 1e-12;
 % - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + %
 
@@ -53,8 +53,8 @@ env.dis.P = env.Sun.Fe/env.c; % [1x1] kg/(m*s^2) - Average pressure due to radia
 
 %% Satellite Orbit Data
 
-orb.a = 9500; % [1x1] m - Semi-major axis 
-orb.e = 0.3; % [1x1] - Eccentricity
+orb.a = env.Earth.R + 500; % [1x1] km - Semi-major axis 
+orb.e = 0; % [1x1] - Eccentricity
 orb.i = 0; % [1x1] rad - Inclination
 orb.n = sqrt(astroConstants(13)/(orb.a^3)); % [1x1] rad/s - Mean orbital Velocity
 orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
@@ -68,7 +68,13 @@ sat.n_b = [1, 0, 0; 0, 1, 0; -1, 0, 0; 0, -1, 0; 0, 0, 1; 0, 0, -1]'; % [3x6] - 
 sat.A = [6*1e-2*ones(4,1); 4*1e-2*ones(2,1)]';% [1x6] m^2 - Surfaces (WRONG NUMBERS!!!)
 sat.rho_s = 0.5*ones(6,1); % [6x1] - Surfaces' diffuse reflection coefficients (WRONG NUMBERS!!!)
 sat.rho_d = 0.1*ones(1, 6); % [1x6] - Surfaces' specular reflection coefficients (WRONG NUMBERS!!!)
-sat.r_CM = [10, 0, 15; 0, 10, 15; -10, 0, -15; 0, -10, -15; 0, 0, 30; 0, 0, 0]*1e-2; % [6x3] m - Distance from centre panel to CM (WRONG NUMBERS!!!)
+sat.r_CM = [
+    0.10,  0,  0;  
+    0,  0.10,  0;  
+   -0.10,  0,  0;  
+    0, -0.10,  0;  
+    0,  0,  0.15;  
+    0,  0, -0.15]; % [6x3] m - Distance from centre panel to CM (WRONG NUMBERS!!!)
 sat.jB = [0.01; 0.05; 0.01]; %!!!!!!!
 sat.Cd = 1.942;
 
@@ -81,7 +87,7 @@ IC.theta = 0; % [1x1] rad - Initial true anomaly of the Spacecraft
 %% Simulation Options
 
 simul.t0 = 0;
-simul.tf = 2*orb.T;
+simul.tf = orb.T;
 
 %% Simulation Start
 
