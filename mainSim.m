@@ -47,9 +47,9 @@ env.dis.P = env.Sun.Fe/env.c; % [1x1] kg/(m*s^2) - Average pressure due to radia
 
 %% Satellite Orbit Data
 
-orb.a = env.Earth.R + 500; % [1x1] Km - Semi-major axis 
+orb.a = env.Earth.R + 14000; % [1x1] Km - Semi-major axis 
 orb.e = 0; % [1x1] - Eccentricity
-orb.i = deg2rad(110); % [1x1] rad - Inclination
+orb.i = deg2rad(103.39); % [1x1] rad - Inclination
 orb.n = sqrt(astroConstants(13)/(orb.a^3)); % [1x1] rad/s - Mean orbital Velocity
 orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
 
@@ -195,10 +195,10 @@ IC.theta = 0; % [1x1] rad - Initial true anomaly of the Spacecraft
 %% Simulation Options
 
 simul.t0 = 0;
-simul.tf = 3*orb.T;
+simul.tf = 2* orb.T;
 
 %% Simulation Start
 
-% out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
+out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
 
 %% Post-Processing
