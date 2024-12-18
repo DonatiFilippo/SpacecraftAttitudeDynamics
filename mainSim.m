@@ -9,6 +9,8 @@
 % We should consider to move the data generation into separate
 % sub-functions as this will greatly improve readability
 
+%% Operational Mode
+
 
 %% Flags
 
