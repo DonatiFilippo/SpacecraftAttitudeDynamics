@@ -14,7 +14,7 @@
 
 %% Flags
 
-flag.realsensors = 1; % Set to 1 to use real sensor models, with mesuring errors
+flag.realsensors = 0; % Set to 1 to use real sensor models, with mesuring errors
 flag.sensverb = 0; % Set to 1 to augment the number of data collected from sensors
 flag.gg = 1; % Set to 1 to use gravity gradient perturbation
 flag.srp = 1; % Set to 1 to consider srp perturbation
@@ -147,7 +147,7 @@ sens.mag.A_nonorth = [1, s_xy, s_xz;
                       s_yx, 1, s_yz;
                       s_zx, s_zy, 1];
 
-sens.mag.flag = 1;
+
 sens.mag.Ts = 1/(2*f);
 sens.mag.Quant = 7*1e-7;
 sens.mag.sat = [4, -4] .* 1e-4;
@@ -199,6 +199,6 @@ simul.tf = 3*orb.T;
 
 %% Simulation Start
 
-out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
+% out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
 
 %% Post-Processing
