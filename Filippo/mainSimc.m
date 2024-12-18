@@ -45,9 +45,9 @@ env.dis.P = env.Sun.Fe/env.c; % [1x1] kg/(m*s^2) - Average pressure due to radia
 
 %% Satellite Orbit Data
 
-orb.a = 20000; % [1x1] m - Semi-major axis 
+orb.a = env.Earth.R + 500; % [1x1] m - Semi-major axis 
 orb.e = 0; % [1x1] - Eccentricity
-orb.i = 101; % [1x1] rad - Inclination
+orb.i = deg2rad(98); % [1x1] rad - Inclination
 orb.n = sqrt(astroConstants(13)/(orb.a^3)); % [1x1] rad/s - Mean orbital Velocity
 orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
 
@@ -175,14 +175,14 @@ sens.mag.SNR = 10^(70/20); % dB
 
 %% Intial Conditions
 
-IC.w0 = [5; 10; 6]; % [3x1] rad/s - Initial Angular rates
-IC.angles = [0, 0.2, 0]; % [1x3] rad - Initial Euler Angles wrt ECI
+IC.w0 = [10; 15; 2]; % [3x1] rad/s - Initial Angular rates
+IC.angles = [1.4, 4, 2.3]; % [1x3] rad - Initial Euler Angles wrt ECI
 IC.theta = 0; % [1x1] rad - Initial true anomaly of the Spacecraft
 
 %% Simulation Options
 
 simul.t0 = 0;
-simul.tf = 1*orb.T;
+simul.tf = 2*orb.T;
 
 %% Simulation Start
 
