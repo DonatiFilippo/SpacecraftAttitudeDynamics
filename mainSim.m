@@ -119,27 +119,38 @@ sens.ss.S0.seed.alpha = 1; % Random Noise seed
 
 % - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + -
 
-% Gyroscope
-
-sens.gyro.freq = 2000; % Max value
-sens.gyro.ADC.quanta = deg2rad(0.22)/3600;
-sens.gyro.saturation = deg2rad(400);
-sens.gyro.sf = randn(3,1) .* (500e-6);
-sens.gyro.scaleFactor = eye(3) + diag(sens.gyro.sf);
-sens.gyro.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
-% I have choosen a random value of 1'' as missaligment 1sigma
-sens.gyro.missalign = DCM(sens.gyro.miss); % Missalignement matrix
-sens.gyro.orth = [[1, 1e-3, 1e-3]; [0, 1, 1e-3]; [0, 1, 1e-3]];
-sens.gyro.bias = randn(3,1) .* (deg2rad(4)/3600);
-sens.gyro.arw = deg2rad(0.15/60*sqrt(1/sens.gyro.freq)); % clearly wrong, but whatever 
-sens.gyro.biasInstability = deg2rad(0.3)/3600; % NEED TO BE CONVERTED
-sens.gyro.gsensing = eye(3);
-
-% - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + -
-
 % Magentometer
-sens.mag.f = 10;% [Hz]
-sens.mag.SNR = 10^(70/20); % dB
+% Hp: magnetometer assumed oriented as the principal inertia frame
+% datas recovered from the data sheet
+% put everything in nT 1 G = 1e5 nT
+
+f = 10; % [Hz]
+sens.mag.SNR = 10^(70/20); % dB 
+
+% Misalignment matrix computation using small angles approximation
+ang = deg2rad([0.5, -0.3, 0.2]); % rad
+sens.mag.A_mis = [1, ang(3), -ang(2);
+                 -ang(3), 1, ang(1);
+                 ang(2), -ang(1), 1]; % misalignment matrix, small angles approximation
+
+% Non-orthogonality matrix computation, considering the cross-axis
+% sensitivity (cxs) from the data sheet
+cxs = 0.002;
+rng('default');
+s_xy = cxs*(2*rand-1);
+s_xz = cxs*(2*rand-1);
+s_yx = 0;
+s_yz = cxs*(2*rand-1);
+s_zx = 0;
+s_zy = cxs*(2*rand-1);
+sens.mag.A_nonorth = [1, s_xy, s_xz; 
+                      s_yx, 1, s_yz;
+                      s_zx, s_zy, 1];
+
+sens.mag.flag = 1;
+sens.mag.Ts = 1/(2*f);
+sens.mag.Quant = 7*1e-7;
+sens.mag.sat = [4, -4] .* 1e-4;
 
 
 %% Actuator
