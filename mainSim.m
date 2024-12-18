@@ -31,7 +31,7 @@ env.G = astroConstants(1); % [1x1] km^3/(kg*s^2) - Universal gravity constant
 env.Earth.n = 2*pi / (360*24*60*60); % [1x1] rad/2 - Earth mean Velocity
 env.Earth.R = astroConstants(23); % [1x1] Km - Radius of the Earth
 env.Earth.i = deg2rad(23.45); % [1x1] rad - Earth Rotation Axis Inclination
-env.Earth.mu = astroConstants(13);
+env.Earth.mu = astroConstants(13); % [1x1] km^3/s^2 - Earth gravity constat ???
 env.Earth.mass = env.Earth.mu/env.G; % [1x1] kg - Earth mass
 env.Earth.omega = 7.2921159 * 1e-5; % [1x1] rad/s - Earth angular velocity
 env.Earth.magInclination = deg2rad(11.5); % [1x1] rad - Magnetic field inclination
@@ -47,9 +47,9 @@ env.dis.P = env.Sun.Fe/env.c; % [1x1] kg/(m*s^2) - Average pressure due to radia
 
 %% Satellite Orbit Data
 
-orb.a = 20000; % [1x1] m - Semi-major axis 
+orb.a = orb.Earth.R + 500; % [1x1] Km - Semi-major axis 
 orb.e = 0; % [1x1] - Eccentricity
-orb.i = 101; % [1x1] rad - Inclination
+orb.i = rad2deg(110); % [1x1] rad - Inclination
 orb.n = sqrt(astroConstants(13)/(orb.a^3)); % [1x1] rad/s - Mean orbital Velocity
 orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
 
