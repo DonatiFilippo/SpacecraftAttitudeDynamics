@@ -91,32 +91,76 @@ sens.ss.ADC.quanta = (2 * sens.ss.fov) / ((2)^(sens.ss.ADC.bit)); % ADC Quanta
 % Face specific Data
 
 % +--------+
-% | Face 1 |
+% | Fine 0 |
 % +--------+
 
-sens.ss.S0.n_b = [1, 0, 0]';
+sens.ss.S0.n_b = [0, 0, 1]';
 sens.ss.S0.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
 % I have choosen a random value of 1'' as missaligment 1sigma
 sens.ss.S0.missalign = DCM(sens.ss.S0.miss); % Missalignement matrix
-sens.ss.S0.A_ssb = eye(3); % Rotation matrix from body frame to Sensor frame
+sens.ss.S0.A_ssb = [[0, 0, -1]; [0, 1, 0]; [1, 0, 0]]; % Rotation matrix from body frame to Sensor frame
 sens.ss.S0.bias.alpha = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
 sens.ss.S0.bias.beta = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
 sens.ss.S0.seed.beta = 0; % Random noise seed
 sens.ss.S0.seed.alpha = 1; % Random Noise seed
 
+
+% +--------+
+% | Face 1 |
+% +--------+
+
+sens.ss.S1.n_b = [1, 0, 0]';
+sens.ss.S1.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
+% I have choosen a random value of 1'' as missaligment 1sigma
+sens.ss.S1.missalign = DCM(sens.ss.S1.miss); % Missalignement matrix
+sens.ss.S1.A_ssb = eye(3); % Rotation matrix from body frame to Sensor frame
+sens.ss.S1.bias.alpha = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S1.bias.beta = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S1.seed.beta = 0; % Random noise seed
+sens.ss.S1.seed.alpha = 1; % Random Noise seed
+
 % +--------+
 % | Face 2 |
 % +--------+
 
+sens.ss.S2.n_b = [0, 1, 0]';
+sens.ss.S2.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
+% I have choosen a random value of 1'' as missaligment 1sigma
+sens.ss.S2.missalign = DCM(sens.ss.S2.miss); % Missalignement matrix
+sens.ss.S2.A_ssb = [[0, 1, 0]; [-1, 0, 0]; [0, 0, 1]]; % Rotation matrix from body frame to Sensor frame
+sens.ss.S2.bias.alpha = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S2.bias.beta = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S2.seed.beta = 0; % Random noise seed
+sens.ss.S2.seed.alpha = 1; % Random Noise seed
 
 % +--------+
 % | Face 3 |
 % +--------+
 
+sens.ss.S3.n_b = [-1, 0, 0]';
+sens.ss.S3.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
+% I have choosen a random value of 1'' as missaligment 1sigma
+sens.ss.S3.missalign = DCM(sens.ss.S3.miss); % Missalignement matrix
+sens.ss.S3.A_ssb = [[-1, 0, 0]; [0, -1, 0]; [0, 0, 1]]; % Rotation matrix from body frame to Sensor frame
+sens.ss.S3.bias.alpha = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S3.bias.beta = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S3.seed.beta = 0; % Random noise seed
+sens.ss.S3.seed.alpha = 1; % Random Noise seed
 
 % +--------+
 % | Face 4 |
 % +--------+
+
+sens.ss.S4.n_b = [0, -1, 0]';
+sens.ss.S4.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
+% I have choosen a random value of 1'' as missaligment 1sigma
+sens.ss.S4.missalign = DCM(sens.ss.S4.miss); % Missalignement matrix
+sens.ss.S4.A_ssb = [[0, -1, 0]; [1, 0, 0]; [0, 0, 1]]; % Rotation matrix from body frame to Sensor frame
+sens.ss.S4.bias.alpha = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S4.bias.beta = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S4.seed.beta = 0; % Random noise seed
+sens.ss.S4.seed.alpha = 1; % Random Noise seed
+
 
 % - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + -
 
