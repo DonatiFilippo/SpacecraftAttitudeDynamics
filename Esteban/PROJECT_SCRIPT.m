@@ -38,5 +38,5 @@ jB = [0.01; 0.05; 0.01];
 
 % Simulation 
 t0 = 0;
-tf = T;
-out = sim("PROJECT_SIMULINK.slx", "StartTime", "t0", "StopTime", "tf", "FixedStep", "0.1");
+tf = 10;
+out = sim("test.slx", "StartTime", "t0", "StopTime", "tf", "FixedStep", "0.1");
