@@ -84,6 +84,8 @@ sens.ss.freq = 50; % Sampling Frequency in Hz
 sens.ss.accuracy = deg2rad(0.5); % Accuracy of sun sensor in radiants
 sens.ss.precision = deg2rad(0.1); % Precision of the sensor in radiants
 sens.ss.ADC.quanta = (2 * sens.ss.fov) / ((2)^(sens.ss.ADC.bit)); % ADC Quanta
+alpha1 = 0.5;
+
 % Note: current notation assume that ADC quanta on Voltage is linearly
 % correlated with quantization of the angle. This isn't true, but good
 % enough approximation
@@ -126,7 +128,9 @@ sens.ss.S0.seed.alpha = 1; % Random Noise seed
 % put everything in nT 1 G = 1e5 nT
 
 f = 10; % [Hz]
-sens.mag.SNR = 10^(70/20); % dB 
+sens.mag.SNR = 10^(70/20); % dB
+sens.mag.sat = [4, -4] .* 1e-4;
+alpha2 = 0.5;
 
 % Misalignment matrix computation using small angles approximation
 ang = deg2rad([0.5, -0.3, 0.2]); % rad
@@ -151,8 +155,6 @@ sens.mag.A_nonorth = [1, s_xy, s_xz;
 
 sens.mag.Ts = 1/(2*f);
 sens.mag.Quant = 7*1e-7;
-sens.mag.sat = [4, -4] .* 1e-4;
-
 
 %% Actuator
 
@@ -201,6 +203,6 @@ simul.tf = 2000;
 
 %% Simulation Start
 
-out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
+out = sim("CubeSatTEST.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
 
 %% Post-Processing
