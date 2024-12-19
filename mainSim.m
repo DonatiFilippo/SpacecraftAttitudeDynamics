@@ -61,7 +61,7 @@ orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
 
 %% Satellite data
 
-sat.Iv = [0.06;0.08;0.04]; % [3x1] Kgm^2 - Pincipal Inertial Moments as a Vector
+sat.Iv = [0.04327;0.095068;0.120327]; % [3x1] Kgm^2 - Pincipal Inertial Moments as a Vector
 sat.I = diag(sat.Iv); % [3x3] Kgm^2 - Inertia Matrix
 sat.invI = inv(sat.I); % [3x3] Kgm^2 - Inverse Inertia Matrix
 sat.n_b = [1, 0, 0; 0, 1, 0; -1, 0, 0; 0, -1, 0; 0, 0, 1; 0, 0, -1]'; % [3x6] - Vector normal to the each surface of satellite in body frame
@@ -190,14 +190,14 @@ act.cmg.sat = 9e-3; % [1x1] N - Max Torque that can be produced by the cmg
 
 %% Intial Conditions
 
-IC.w0 = [1e-6; 1e-6; orb.n]; % [3x1] rad/s - Initial Angular rates
+IC.w0 = [5e-3; 6e-4; 2e-4]; % [3x1] rad/s - Initial Angular rates
 IC.angles = [0, 0.0000001, 0]; % [1x3] rad - Initial Euler Angles wrt ECI
 IC.theta = 0; % [1x1] rad - Initial true anomaly of the Spacecraft
 
 %% Simulation Options
 
 simul.t0 = 0;
-simul.tf = 2* orb.T;
+simul.tf = 2000;
 
 %% Simulation Start
 
