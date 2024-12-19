@@ -79,7 +79,7 @@ sat.jB = [0.01; 0.05; 0.01]; %!!!!!!!
 
 % Generic Sensor Data
 sens.ss.ADC.bit = 10;
-sens.ss.fov = deg2rad(60); % Sensor FOV in radiants
+sens.ss.fov = deg2rad(180); % Sensor FOV in radiants
 sens.ss.freq = 50; % Sampling Frequency in Hz
 sens.ss.accuracy = deg2rad(0.5); % Accuracy of sun sensor in radiants
 sens.ss.precision = deg2rad(0.1); % Precision of the sensor in radiants
@@ -191,7 +191,7 @@ act.cmg.sat = 9e-3; % [1x1] N - Max Torque that can be produced by the cmg
 %% Intial Conditions
 
 IC.w0 = [5e-3; 6e-4; 2e-4]; % [3x1] rad/s - Initial Angular rates
-IC.angles = [0, 0.0000001, 0]; % [1x3] rad - Initial Euler Angles wrt ECI
+IC.angles = [0.5, 0.05, -pi/2 + 0.5]; % [1x3] rad - Initial Euler Angles wrt ECI
 IC.theta = 0; % [1x1] rad - Initial true anomaly of the Spacecraft
 
 %% Simulation Options
