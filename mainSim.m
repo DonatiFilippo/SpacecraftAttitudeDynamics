@@ -156,7 +156,8 @@ sens.mag.sat = [4, -4] .* 1e-4;
 %% Actuator
 
 % Control Moment Gyroscope
-
+act.cmg.h = [1;1;1;1];
+act.cmg.sat = 9e-3; % [1x1] N - Max Torque that can be produced by the cmg
 % Generic Data 
 
 
