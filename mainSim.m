@@ -48,7 +48,7 @@ env.dis.P = env.Sun.Fe/env.c; % [1x1] kg/(m*s^2) - Average pressure due to radia
 
 %% Satellite Orbit Data
 
-orb.a = env.Earth.R + 14000; % [1x1] Km - Semi-major axis 
+orb.a = env.Earth.R + 700; % [1x1] Km - Semi-major axis 
 orb.e = 0; % [1x1] - Eccentricity
 orb.i = deg2rad(103.39); % [1x1] rad - Inclination
 orb.n = sqrt(astroConstants(13)/(orb.a^3)); % [1x1] rad/s - Mean orbital Velocity
