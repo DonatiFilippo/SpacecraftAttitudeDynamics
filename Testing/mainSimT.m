@@ -234,8 +234,8 @@ act.cmg.sat = 9e-3; % [1x1] N - Max Torque that can be produced by the cmg
 
 %% Intial Conditions
 
-IC.w0 = [0; 0; 1e-5]; % [3x1] rad/s - Initial Angular rates
-IC.angles = [0.05, 0.05, 0.05]; % [1x3] rad - Initial Euler Angles wrt ECI
+IC.w0 = [5e-3; 6e-4; 2e-4]; % [3x1] rad/s - Initial Angular rates
+IC.angles = [0.5, 0.05, -pi/2 + 0.5]; % [1x3] rad - Initial Euler Angles wrt ECI
 IC.theta = 0; % [1x1] rad - Initial true anomaly of the Spacecraft
 
 %% Simulation Options
@@ -245,6 +245,6 @@ simul.tf = 2000;
 
 %% Simulation Start
 
-% out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
+%out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
 
 %% Post-Processing
