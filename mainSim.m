@@ -14,7 +14,7 @@
 
 %% Flags
 
-flag.realsensors = 0; % Set to 1 to use real sensor models, with mesuring errors
+flag.realsensors = 1; % Set to 1 to use real sensor models, with mesuring errors
 flag.sensverb = 0; % Set to 1 to augment the number of data collected from sensors
 flag.realact = 0; % Set to 1 to use real sensor model
 flag.gg = 1; % Set to 1 to use gravity gradient perturbation
@@ -79,7 +79,7 @@ sat.jB = [0.01; 0.05; 0.01]; %!!!!!!!
 
 % Generic Sensor Data
 sens.ss.ADC.bit = 10;
-sens.ss.fov = deg2rad(180); % Sensor FOV in radiants
+sens.ss.fov = deg2rad(60); % Sensor FOV in radiants
 sens.ss.freq = 50; % Sampling Frequency in Hz
 sens.ss.accuracy = deg2rad(0.5); % Accuracy of sun sensor in radiants
 sens.ss.precision = deg2rad(0.1); % Precision of the sensor in radiants
@@ -94,7 +94,7 @@ sens.ss.ADC.quanta = (2 * sens.ss.fov) / ((2)^(sens.ss.ADC.bit)); % ADC Quanta
 % | Fine 0 |
 % +--------+
 
-sens.ss.S0.n_b = [0, 0, 1]';
+sens.ss.S0.n_b = [0, 0, -1]'; % To change when new matrix K is made
 sens.ss.S0.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
 % I have choosen a random value of 1'' as missaligment 1sigma
 sens.ss.S0.missalign = DCM(sens.ss.S0.miss); % Missalignement matrix
