@@ -54,7 +54,7 @@ orb.i = deg2rad(103.39); % [1x1] rad - Inclination
 orb.n = sqrt(astroConstants(13)/(orb.a^3)); % [1x1] rad/s - Mean orbital Velocity
 orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
 
-% orb.W = -2.0647E14 * orb.a^(-7/2) * cos(orb.i) * time; % [1x1] degrees/day - RAAN (for e = 0)
+% orb.OMprec = -2.0647E14 * orb.a^(-7/2) * cos(orb.i) * time; % [1x1] degrees/day - RAAN (for e = 0)
 
 % IN GENERAL : orb.W = -3/2 * J2 * (env.Earth.R/orb.a)^2 * 1/(1 - orb.e^2) * sqrt(env.Earth.mu/orb.a^3) * cos(orb.i) * time; 
 
@@ -237,6 +237,7 @@ act.cmg.sat = 9e-3; % [1x1] N - Max Torque that can be produced by the cmg
 IC.w0 = [0; 0; 1e-5]; % [3x1] rad/s - Initial Angular rates
 IC.angles = [0.05, 0.05, 0.05]; % [1x3] rad - Initial Euler Angles wrt ECI
 IC.theta = 0; % [1x1] rad - Initial true anomaly of the Spacecraft
+IC.OM = deg2rad(-90);
 
 %% Simulation Options
 
