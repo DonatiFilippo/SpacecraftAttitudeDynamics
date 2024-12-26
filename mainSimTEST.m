@@ -14,9 +14,9 @@
 
 %% Flags
 
-flag.realsensors = 0; % Set to 1 to use real sensor models, with mesuring errors
+flag.realsensors = 1; % Set to 1 to use real sensor models, with mesuring errors
 flag.sensverb = 0; % Set to 1 to augment the number of data collected from sensors
-flag.realact = 0; % Set to 1 to use real sensor model
+flag.realact = 1; % Set to 1 to use real sensor model
 flag.gg = 1; % Set to 1 to use gravity gradient perturbation
 flag.srp = 1; % Set to 1 to consider srp perturbation
 flag.mag = 1; % Set to 1 to consider magnetic field perturbation
@@ -48,13 +48,13 @@ env.dis.P = env.Sun.Fe/env.c; % [1x1] kg/(m*s^2) - Average pressure due to radia
 
 %% Satellite Orbit Data
 
-orb.a = env.Earth.R + 14000; % [1x1] Km - Semi-major axis 
+orb.a = env.Earth.R + 700; % [1x1] Km - Semi-major axis 
 orb.e = 0; % [1x1] - Eccentricity
 orb.i = deg2rad(103.39); % [1x1] rad - Inclination
 orb.n = sqrt(astroConstants(13)/(orb.a^3)); % [1x1] rad/s - Mean orbital Velocity
 orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
 
-% orb.W = -2.0647E14 * orb.a^(-7/2) * cos(orb.i) * time; % [1x1] degrees/day - RAAN (for e = 0)
+% orb.OMprec = -2.0647E14 * orb.a^(-7/2) * cos(orb.i) * time; % [1x1] degrees/day - RAAN (for e = 0)
 
 % IN GENERAL : orb.W = -3/2 * J2 * (env.Earth.R/orb.a)^2 * 1/(1 - orb.e^2) * sqrt(env.Earth.mu/orb.a^3) * cos(orb.i) * time; 
 
@@ -79,46 +79,89 @@ sat.jB = [0.01; 0.05; 0.01]; %!!!!!!!
 
 % Generic Sensor Data
 sens.ss.ADC.bit = 10;
-sens.ss.fov = deg2rad(180); % Sensor FOV in radiants
+sens.ss.fov = deg2rad(60); % Sensor FOV in radiants
 sens.ss.freq = 50; % Sampling Frequency in Hz
 sens.ss.accuracy = deg2rad(0.5); % Accuracy of sun sensor in radiants
 sens.ss.precision = deg2rad(0.1); % Precision of the sensor in radiants
 sens.ss.ADC.quanta = (2 * sens.ss.fov) / ((2)^(sens.ss.ADC.bit)); % ADC Quanta
-alpha1 = 0.5;
-
 % Note: current notation assume that ADC quanta on Voltage is linearly
 % correlated with quantization of the angle. This isn't true, but good
 % enough approximation
+alpha1 = 0.5;
 
 % Face specific Data
 
 % +--------+
-% | Face 1 |
+% | Fine 0 |
 % +--------+
 
-sens.ss.S0.n_b = [1, 0, 0]';
+sens.ss.S0.n_b = [0, 0, -1]'; % To change when new matrix K is made
 sens.ss.S0.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
 % I have choosen a random value of 1'' as missaligment 1sigma
 sens.ss.S0.missalign = DCM(sens.ss.S0.miss); % Missalignement matrix
-sens.ss.S0.A_ssb = eye(3); % Rotation matrix from body frame to Sensor frame
+sens.ss.S0.A_ssb = [[0, 0, -1]; [0, 1, 0]; [1, 0, 0]]; % Rotation matrix from body frame to Sensor frame
 sens.ss.S0.bias.alpha = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
 sens.ss.S0.bias.beta = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
 sens.ss.S0.seed.beta = 0; % Random noise seed
 sens.ss.S0.seed.alpha = 1; % Random Noise seed
 
+
+% +--------+
+% | Face 1 |
+% +--------+
+
+sens.ss.S1.n_b = [1, 0, 0]';
+sens.ss.S1.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
+% I have choosen a random value of 1'' as missaligment 1sigma
+sens.ss.S1.missalign = DCM(sens.ss.S1.miss); % Missalignement matrix
+sens.ss.S1.A_ssb = eye(3); % Rotation matrix from body frame to Sensor frame
+sens.ss.S1.bias.alpha = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S1.bias.beta = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S1.seed.beta = 0; % Random noise seed
+sens.ss.S1.seed.alpha = 1; % Random Noise seed
+
 % +--------+
 % | Face 2 |
 % +--------+
 
+sens.ss.S2.n_b = [0, 1, 0]';
+sens.ss.S2.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
+% I have choosen a random value of 1'' as missaligment 1sigma
+sens.ss.S2.missalign = DCM(sens.ss.S2.miss); % Missalignement matrix
+sens.ss.S2.A_ssb = [[0, 1, 0]; [-1, 0, 0]; [0, 0, 1]]; % Rotation matrix from body frame to Sensor frame
+sens.ss.S2.bias.alpha = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S2.bias.beta = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S2.seed.beta = 0; % Random noise seed
+sens.ss.S2.seed.alpha = 1; % Random Noise seed
 
 % +--------+
 % | Face 3 |
 % +--------+
 
+sens.ss.S3.n_b = [-1, 0, 0]';
+sens.ss.S3.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
+% I have choosen a random value of 1'' as missaligment 1sigma
+sens.ss.S3.missalign = DCM(sens.ss.S3.miss); % Missalignement matrix
+sens.ss.S3.A_ssb = [[-1, 0, 0]; [0, -1, 0]; [0, 0, 1]]; % Rotation matrix from body frame to Sensor frame
+sens.ss.S3.bias.alpha = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S3.bias.beta = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S3.seed.beta = 0; % Random noise seed
+sens.ss.S3.seed.alpha = 1; % Random Noise seed
 
 % +--------+
 % | Face 4 |
 % +--------+
+
+sens.ss.S4.n_b = [0, -1, 0]';
+sens.ss.S4.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
+% I have choosen a random value of 1'' as missaligment 1sigma
+sens.ss.S4.missalign = DCM(sens.ss.S4.miss); % Missalignement matrix
+sens.ss.S4.A_ssb = [[0, -1, 0]; [1, 0, 0]; [0, 0, 1]]; % Rotation matrix from body frame to Sensor frame
+sens.ss.S4.bias.alpha = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S4.bias.beta = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
+sens.ss.S4.seed.beta = 0; % Random noise seed
+sens.ss.S4.seed.alpha = 1; % Random Noise seed
+
 
 % - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + -
 
@@ -128,15 +171,14 @@ sens.ss.S0.seed.alpha = 1; % Random Noise seed
 % put everything in nT 1 G = 1e5 nT
 
 f = 10; % [Hz]
-sens.mag.SNR = 10^(70/20); % dB
-sens.mag.sat = [4, -4] .* 1e-4;
-alpha2 = 0.5;
+sens.mag.SNR = 10^(70/20); % dB 
 
 % Misalignment matrix computation using small angles approximation
 ang = deg2rad([0.5, -0.3, 0.2]); % rad
 sens.mag.A_mis = [1, ang(3), -ang(2);
                  -ang(3), 1, ang(1);
                  ang(2), -ang(1), 1]; % misalignment matrix, small angles approximation
+alpha2 = 0.5;
 
 % Non-orthogonality matrix computation, considering the cross-axis
 % sensitivity (cxs) from the data sheet
@@ -155,6 +197,8 @@ sens.mag.A_nonorth = [1, s_xy, s_xz;
 
 sens.mag.Ts = 1/(2*f);
 sens.mag.Quant = 7*1e-7;
+sens.mag.sat = [4, -4] .* 1e-4;
+
 
 %% Actuator
 
@@ -192,9 +236,10 @@ act.cmg.sat = 9e-3; % [1x1] N - Max Torque that can be produced by the cmg
 
 %% Intial Conditions
 
-IC.w0 = [5e-3; 6e-4; 2e-4]; % [3x1] rad/s - Initial Angular rates
-IC.angles = [0.5, 0.05, -pi/2 + 0.5]; % [1x3] rad - Initial Euler Angles wrt ECI
+IC.w0 = [0; 0; 1e-5]; % [3x1] rad/s - Initial Angular rates
+IC.angles = [0.05, 0.05, 0.05]; % [1x3] rad - Initial Euler Angles wrt ECI
 IC.theta = 0; % [1x1] rad - Initial true anomaly of the Spacecraft
+IC.OM = deg2rad(-90);
 
 %% Simulation Options
 
@@ -203,6 +248,6 @@ simul.tf = 2000;
 
 %% Simulation Start
 
-out = sim("CubeSatTEST.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
+% out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
 
 %% Post-Processing
