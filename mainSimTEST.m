@@ -87,7 +87,7 @@ sens.ss.ADC.quanta = (2 * sens.ss.fov) / ((2)^(sens.ss.ADC.bit)); % ADC Quanta
 % Note: current notation assume that ADC quanta on Voltage is linearly
 % correlated with quantization of the angle. This isn't true, but good
 % enough approximation
-alpha1 = 0.5;
+alpha1 = 0.4;
 
 % Face specific Data
 
@@ -178,7 +178,7 @@ ang = deg2rad([0.5, -0.3, 0.2]); % rad
 sens.mag.A_mis = [1, ang(3), -ang(2);
                  -ang(3), 1, ang(1);
                  ang(2), -ang(1), 1]; % misalignment matrix, small angles approximation
-alpha2 = 0.5;
+alpha2 = 0.2;
 
 % Non-orthogonality matrix computation, considering the cross-axis
 % sensitivity (cxs) from the data sheet
@@ -248,6 +248,6 @@ simul.tf = 2000;
 
 %% Simulation Start
 
-% out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
+out = sim("CubeSatTEST.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
 
 %% Post-Processing
