@@ -29,7 +29,7 @@ env.G = astroConstants(1); % [1x1] km^3/(kg*s^2) - Universal gravity constant
 
 % Earth
 
-env.Earth.n = 2*pi / (360*24*60*60); % [1x1] rad/2 - Earth mean Velocity
+env.Earth.n = 2*pi / (360*24*60*60); % [1x1] rad/s - Earth mean Velocity
 env.Earth.R = astroConstants(23); % [1x1] Km - Radius of the Earth
 env.Earth.i = deg2rad(23.45); % [1x1] rad - Earth Rotation Axis Inclination
 env.Earth.mu = astroConstants(13); % [1x1] km^3/s^2 - Earth gravity constat ???
@@ -54,7 +54,8 @@ orb.i = deg2rad(103.39); % [1x1] rad - Inclination
 orb.n = sqrt(astroConstants(13)/(orb.a^3)); % [1x1] rad/s - Mean orbital Velocity
 orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
 
-orb.OMprec = -2.0647E14 * orb.a^(-7/2) * cos(orb.i); % [1x1] degrees/day - RAAN (for e = 0)
+%orb.OMprec = -2.0647E14 * orb.a^(-7/2) * cos(orb.i); % [1x1] degrees/day - RAAN (for e = 0)
+orb.OMprec = env.Earth.n;
 
 % IN GENERAL : orb.W = -3/2 * J2 * (env.Earth.R/orb.a)^2 * 1/(1 - orb.e^2) * sqrt(env.Earth.mu/orb.a^3) * cos(orb.i) * time; 
 
@@ -242,7 +243,7 @@ IC.OM = deg2rad(-90);
 %% Simulation Options
 
 simul.t0 = 0;
-simul.tf = 2000;
+simul.tf = 10000;
 
 %% Simulation Start
 
