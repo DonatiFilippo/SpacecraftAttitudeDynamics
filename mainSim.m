@@ -95,7 +95,7 @@ sens.ss.ADC.quanta = (2 * sens.ss.fov) / ((2)^(sens.ss.ADC.bit)); % ADC Quanta
 % | Fine 0 |
 % +--------+
 
-sens.ss.S0.n_b = [0, 0, -1]'; % To change when new matrix K is made
+sens.ss.S0.n_b = [0, 0, 1]'; % To change when new matrix K is made
 sens.ss.S0.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
 % I have choosen a random value of 1'' as missaligment 1sigma
 sens.ss.S0.missalign = DCM(sens.ss.S0.miss); % Missalignement matrix
