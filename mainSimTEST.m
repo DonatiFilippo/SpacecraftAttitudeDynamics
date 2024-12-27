@@ -14,9 +14,9 @@
 
 %% Flags
 
-flag.realsensors = 1; % Set to 1 to use real sensor models, with mesuring errors
+flag.realsensors = 0; % Set to 1 to use real sensor models, with mesuring errors
 flag.sensverb = 0; % Set to 1 to augment the number of data collected from sensors
-flag.realact = 1; % Set to 1 to use real sensor model
+flag.realact = 0; % Set to 1 to use real sensor model
 flag.gg = 1; % Set to 1 to use gravity gradient perturbation
 flag.srp = 1; % Set to 1 to consider srp perturbation
 flag.mag = 1; % Set to 1 to consider magnetic field perturbation
@@ -238,10 +238,13 @@ act.cmg.sat = 9e-3; % [1x1] N - Max Torque that can be produced by the cmg
 
 %% Intial Conditions
 
-IC.w0 = [0; 0; 1e-5]; % [3x1] rad/s - Initial Angular rates
+IC.w0 = [3e-4; 2e-5; 2e-4]; % [3x1] rad/s - Initial Angular rates
 IC.angles = [0.05, 0.05, 0.05]; % [1x3] rad - Initial Euler Angles wrt ECI
 IC.theta = 0; % [1x1] rad - Initial true anomaly of the Spacecraft
 IC.OM = deg2rad(-90);
+K = [[-0.000111137632631091	0.00881823306131362	1.15505226687111	0.00727916936668958	8.06144430507844e-18];
+[-0.00591485328207158	-0.000128050762996602	0.00149089437374912	0.775295564337461	-4.09741001860693e-18];
+[-1.24702741653899e-18	-1.69635563707764e-19	-7.90291734003879e-17	2.66996893826187e-17	0.00836660026534074]];
 
 %% Simulation Options
 
