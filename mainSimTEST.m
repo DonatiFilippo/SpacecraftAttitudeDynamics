@@ -89,7 +89,8 @@ sens.ss.ADC.quanta = (2 * sens.ss.fov) / ((2)^(sens.ss.ADC.bit)); % ADC Quanta
 % correlated with quantization of the angle. This isn't true, but good
 % enough approximation
 
-alpha1 = 1/sens.ss.accuracy^2;
+%alpha1 = 1/sens.ss.accuracy^2;
+alpha1 = 0.7;
 
 % Face specific Data
 
@@ -200,7 +201,8 @@ sens.mag.Ts = 1/(2*f);
 sens.mag.Quant = 7*1e-7;
 sens.mag.sat = [4, -4] .* 1e-4;
 
-alpha2 = sens.mag.SNR / (1 + norm(sens.mag.A_nonorth, 'fro'));
+% alpha2 = sens.mag.SNR / (1 + norm(sens.mag.A_nonorth, 'fro'));
+alpha2 = 0.3;
 
 %% Actuator
 
