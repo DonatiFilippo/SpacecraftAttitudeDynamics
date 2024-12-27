@@ -14,9 +14,9 @@
 
 %% Flags
 
-flag.realsensors = 0; % Set to 1 to use real sensor models, with mesuring errors
+flag.realsensors = 1; % Set to 1 to use real sensor models, with mesuring errors
 flag.sensverb = 0; % Set to 1 to augment the number of data collected from sensors
-flag.realact = 0; % Set to 1 to use real sensor model
+flag.realact = 1; % Set to 1 to use real sensor model
 flag.gg = 1; % Set to 1 to use gravity gradient perturbation
 flag.srp = 1; % Set to 1 to consider srp perturbation
 flag.mag = 1; % Set to 1 to consider magnetic field perturbation
@@ -29,7 +29,7 @@ env.G = astroConstants(1); % [1x1] km^3/(kg*s^2) - Universal gravity constant
 
 % Earth
 
-env.Earth.n = 2*pi / (360*24*60*60); % [1x1] rad/2 - Earth mean Velocity
+env.Earth.n = 2*pi / (365*24*60*60); % [1x1] rad/2 - Earth mean Velocity
 env.Earth.R = astroConstants(23); % [1x1] Km - Radius of the Earth
 env.Earth.i = deg2rad(23.45); % [1x1] rad - Earth Rotation Axis Inclination
 env.Earth.mu = astroConstants(13); % [1x1] km^3/s^2 - Earth gravity constat ???
@@ -48,14 +48,15 @@ env.dis.P = env.Sun.Fe/env.c; % [1x1] kg/(m*s^2) - Average pressure due to radia
 
 %% Satellite Orbit Data
 
-orb.a = env.Earth.R + 700; % [1x1] Km - Semi-major axis 
+orb.a = env.Earth.R + 887.6790; % [1x1] Km - Semi-major axis 
 orb.e = 0; % [1x1] - Eccentricity
-orb.i = deg2rad(103.39); % [1x1] rad - Inclination
+orb.i = deg2rad(98.9897); % [1x1] rad - Inclination
 orb.n = sqrt(astroConstants(13)/(orb.a^3)); % [1x1] rad/s - Mean orbital Velocity
 orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
+%orb.OMprec = -2.0647E14 * orb.a^(-7/2) * cos(orb.i); % [1x1] degrees/day - RAAN (for e = 0)
+orb.OMprec = env.Earth.n;
 
-% orb.OMprec = -2.0647E14 * orb.a^(-7/2) * cos(orb.i) * time; % [1x1] degrees/day - RAAN (for e = 0)
-
+icalc = acos(orb.OMprec / ((orb.a^(-7/2))*-2.0647e14));
 % IN GENERAL : orb.W = -3/2 * J2 * (env.Earth.R/orb.a)^2 * 1/(1 - orb.e^2) * sqrt(env.Earth.mu/orb.a^3) * cos(orb.i) * time; 
 
 
@@ -96,7 +97,7 @@ alpha1 = 1/sens.ss.accuracy^2;
 % | Fine 0 |
 % +--------+
 
-sens.ss.S0.n_b = [0, 0, -1]'; % To change when new matrix K is made
+sens.ss.S0.n_b = [0, 0, 1]'; % To change when new matrix K is made
 sens.ss.S0.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
 % I have choosen a random value of 1'' as missaligment 1sigma
 sens.ss.S0.missalign = DCM(sens.ss.S0.miss); % Missalignement matrix
@@ -180,8 +181,6 @@ sens.mag.A_mis = [1, ang(3), -ang(2);
                  -ang(3), 1, ang(1);
                  ang(2), -ang(1), 1]; % misalignment matrix, small angles approximation
 
-alpha2 = sens.mag.SNR / (1 + norm(sens.mag.A_nonorth, 'fro'));
-
 % Non-orthogonality matrix computation, considering the cross-axis
 % sensitivity (cxs) from the data sheet
 cxs = 0.002;
@@ -201,6 +200,7 @@ sens.mag.Ts = 1/(2*f);
 sens.mag.Quant = 7*1e-7;
 sens.mag.sat = [4, -4] .* 1e-4;
 
+alpha2 = sens.mag.SNR / (1 + norm(sens.mag.A_nonorth, 'fro'));
 
 %% Actuator
 
@@ -238,13 +238,10 @@ act.cmg.sat = 9e-3; % [1x1] N - Max Torque that can be produced by the cmg
 
 %% Intial Conditions
 
-IC.w0 = [3e-4; 2e-5; 2e-4]; % [3x1] rad/s - Initial Angular rates
+IC.w0 = [0; 0; 1e-5]; % [3x1] rad/s - Initial Angular rates
 IC.angles = [0.05, 0.05, 0.05]; % [1x3] rad - Initial Euler Angles wrt ECI
 IC.theta = 0; % [1x1] rad - Initial true anomaly of the Spacecraft
-IC.OM = deg2rad(-90);
-K = [[-0.000111137632631091	0.00881823306131362	1.15505226687111	0.00727916936668958	8.06144430507844e-18];
-[-0.00591485328207158	-0.000128050762996602	0.00149089437374912	0.775295564337461	-4.09741001860693e-18];
-[-1.24702741653899e-18	-1.69635563707764e-19	-7.90291734003879e-17	2.66996893826187e-17	0.00836660026534074]];
+IC.OM = deg2rad(-90); % Intial RAAN
 
 %% Simulation Options
 
