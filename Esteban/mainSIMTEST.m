@@ -181,8 +181,6 @@ sens.mag.A_mis = [1, ang(3), -ang(2);
                  -ang(3), 1, ang(1);
                  ang(2), -ang(1), 1]; % misalignment matrix, small angles approximation
 
-alpha2 = sens.mag.SNR / (1 + norm(sens.mag.A_nonorth, 'fro'));
-
 % Non-orthogonality matrix computation, considering the cross-axis
 % sensitivity (cxs) from the data sheet
 cxs = 0.002;
@@ -202,6 +200,7 @@ sens.mag.Ts = 1/(2*f);
 sens.mag.Quant = 7*1e-7;
 sens.mag.sat = [4, -4] .* 1e-4;
 
+alpha2 = sens.mag.SNR / (1 + norm(sens.mag.A_nonorth, 'fro'));
 
 %% Actuator
 
@@ -251,6 +250,6 @@ simul.tf = 2000;
 
 %% Simulation Start
 
-% out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
+out = sim("CubeSatTEST.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
 
 %% Post-Processing
