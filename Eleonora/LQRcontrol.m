@@ -35,4 +35,18 @@ R = diag([1; 1; 1]);
 % Q = diag([7e-5; 7e-5; 1.2; 1.2; 7e-5]);
 % R = diag([1; 1; 1]);
 
-% forse ho fatto il controllo al contrario, SENZA
+
+% % Try with the optimal control (MARCO)
+% alpha_x_max = deg2rad(10);
+% alpha_y_max = deg2rad(5);
+% alpha_z_max = deg2rad(5);
+% w_x_max = 10^-2;
+% w_y_max = 10^-2;
+% w_z_max = 10^-2
+% Q = diag([1/alpha_x_max^2;1/alpha_y_max^2;1/alpha_z_max^2;1/w_x_max^2;1/w_y_max^2;1/w_z_max^2]);
+% 
+% u_x_max = 40;
+% u_y_max = 40;
+% u_z_max = 40;
+% R = diag([1/u_x_max^2;1/u_y_max^2;1/u_z_max^2]);
+% [K_optimal,S,P_optimal] = lqr(A_dyn,B_dyn,Q,R);
