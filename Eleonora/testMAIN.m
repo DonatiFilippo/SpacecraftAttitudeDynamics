@@ -243,7 +243,7 @@ IC.OM = deg2rad(-90); % Intial RAAN
 %% Simulation Options
 
 simul.t0 = 0;
-simul.tf = 3*orb.T;
+simul.tf = orb.T;
 
 %% Simulation Start
 
