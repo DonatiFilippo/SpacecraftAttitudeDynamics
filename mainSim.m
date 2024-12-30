@@ -233,9 +233,11 @@ act.cmg.sat = 9e-3; % [1x1] N - Max Torque that can be produced by the cmg
 
 %% Navigation
 
-alpha1 = 1/sens.ss.accuracy^2;
-alpha2 = sens.mag.SNR / (1 + norm(sens.mag.A_nonorth, 'fro'));
+% alpha1 = 1/sens.ss.accuracy^2;
+% alpha2 = sens.mag.SNR / (1 + norm(sens.mag.A_nonorth, 'fro'));
 
+alpha1 = 0.7;
+alpha2 = 0.3;
 
 %% Intial Conditions
 
