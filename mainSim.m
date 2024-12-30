@@ -231,6 +231,10 @@ act.cmg.sat = 9e-3; % [1x1] N - Max Torque that can be produced by the cmg
 % | Gyro 4 |
 % +--------+
 
+%% Navigation
+
+alpha1 = 1/sens.ss.accuracy^2;
+alpha2 = sens.mag.SNR / (1 + norm(sens.mag.A_nonorth, 'fro'));
 
 
 %% Intial Conditions
