@@ -246,20 +246,21 @@ IC.theta = 0; % [1x1] rad - Initial true anomaly of the Spacecraft
 IC.OM = deg2rad(-90); % Intial RAAN
 
 %% State-Observer
-
-A = [0, 0 , 0;
-    0, 0, 0;
-    0, 0, 0];
-
-B= sat.invI;
+ws = 0.06;
+A = [[0,(sat.Iv(2)-sat.Iv(3))/sat.Iv(1)*ws,  0]; [(sat.Iv(3)-sat.Iv(1))/sat.Iv(2)*ws, 0, 0]; [0, 0, 0]];
+B2= sat.invI;
 
 C = [1, 0 , 0;
     0, 1, 0;
     0, 0, 1]; 
 
-D = A;
+R = diag([0.9; 2; 1]);
+Q = diag([1.2; 1.2; 7e-5]);
 
-L = diag([10,10,10]);
+[K2,S,P] = lqr(A',C,Q,R);
+
+L = K2';
+A2 = A - L*C;
 
 
 %% Simulation Options
