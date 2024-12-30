@@ -245,6 +245,23 @@ IC.angles = [0.05, 0.05, 0.05]; % [1x3] rad - Initial Euler Angles wrt ECI
 IC.theta = 0; % [1x1] rad - Initial true anomaly of the Spacecraft
 IC.OM = deg2rad(-90); % Intial RAAN
 
+%% State-Observer
+
+A = [0, 0 , 0;
+    0, 0, 0;
+    0, 0, 0];
+
+B= sat.invI;
+
+C = [1, 0 , 0;
+    0, 1, 0;
+    0, 0, 1]; 
+
+D = A;
+
+L = diag([10,10,10]);
+
+
 %% Simulation Options
 
 simul.t0 = 0;
