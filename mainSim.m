@@ -306,10 +306,41 @@ IC.OM = deg2rad(-90); % Intial RAAN
 %% Simulation Options
 
 simul.t0 = 0;
-simul.tf = 2000;
+simul.tf = orb.T;
 
 %% Simulation Start
 
-% out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
+out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
 
 %% Post-Processing
+% Perturbations representation along the orbit
+
+% SRP
+figure
+plot(out.tout, out.T_srp(:,1),'r-', out.tout, out.T_srp(:,2), 'g-', out.tout, out.T_srp(:,3), 'b-', 'LineWidth', 2)
+grid on
+legend('Tx_s_r_p', 'Ty_s_r_p', 'Tz_s_r_p')
+xlabel('Time [s]')
+ylabel('Torque [Nm]')
+title('Solar Radiation Pressure torque')
+xlim([0, orb.T])
+
+% GG
+figure
+plot(out.tout, out.T_gg(:,1),'r-', out.tout, out.T_gg(:,2), 'g-', out.tout, out.T_gg(:,3), 'b-', 'LineWidth', 2)
+grid on
+legend('Tx_g_g', 'Ty_g_g', 'Tz_g_g')
+xlabel('Time [s]')
+ylabel('Torque [Nm]')
+title('Gravity Gradient torque')
+xlim([0, orb.T])
+
+% MAG
+figure
+plot(out.tout, out.T_mag(:,1),'r-', out.tout, out.T_mag(:,2), 'g-', out.tout, out.T_mag(:,3), 'b-', 'LineWidth', 2)
+grid on
+legend('Tx_m_a_g', 'Ty_m_a_g', 'Tz_m_a_g')
+xlabel('Time [s]')
+ylabel('Torque [Nm]')
+title('Magnetic field torque')
+xlim([0, orb.T])
