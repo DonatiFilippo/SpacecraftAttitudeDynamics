@@ -20,6 +20,8 @@ flag.realact = 1; % Set to 1 to use real sensor model
 flag.gg = 1; % Set to 1 to use gravity gradient perturbation
 flag.srp = 1; % Set to 1 to consider srp perturbation
 flag.mag = 1; % Set to 1 to consider magnetic field perturbation
+flag.contr1 = 0; % Set to 1 to use detumbling control, 0 to use slew/pointing
+flag.contr2 = 1; % Set to 1 to use the control chosen with previous flag, 0 to turn off control
 
 %% Environment Data
 
@@ -266,10 +268,43 @@ Q = diag([4.5e-2; 4.5e-2; 2e-6]);
 L = K2';
 A2 = A - L*C;
 
+%% Control
+wsc = 60*orb.n;
+
+Ac = [0, wsc, 0, -1, 0;
+    -wsc, 0, 1, 0, 0;
+    0, 0, 0, (sat.Iv(2)-sat.Iv(3))/sat.Iv(1)*wsc, 0;
+    0, 0, (sat.Iv(3)-sat.Iv(1))/sat.Iv(2)*wsc, 0, 0;
+    0, 0, 0, 0, 0];
+
+Bc = [0, 0, 0;
+    0, 0, 0;
+    1/sat.Iv(1), 0, 0;
+    0, 1/sat.Iv(2), 0;
+    0, 0, sat.Iv(3)];
+
+s_x_max = 1;
+s_y_max = 1;
+w_x_max = 10^-2;
+w_y_max = 10^-2;
+w_z_max = 10^-2;
+Qc = diag([1/s_x_max^2;1/s_y_max^2;1/w_x_max^2;1/w_y_max^2;1/w_z_max^2]);
+
+u_x_max = 9e-3;
+u_y_max = 9e-3;
+u_z_max = 9e-3;
+Rc = diag([1/u_x_max^2;1/u_y_max^2;1/u_z_max^2]);
+
+
+% Another option
+% Qc = diag([7e-5; 7e-5; 1.2; 1.2; 0.35]);
+% Rc = diag([1; 1; 1]);
+
+[K,~,~] = lqr(Ac,Bc,Qc,Rc);
 %% Simulation Options
 
 simul.t0 = 0;
-simul.tf = 2000;
+simul.tf = orb.T;
 
 %% Simulation Start
 
