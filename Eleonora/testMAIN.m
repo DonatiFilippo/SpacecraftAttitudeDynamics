@@ -20,6 +20,8 @@ flag.realact = 1; % Set to 1 to use real sensor model
 flag.gg = 1; % Set to 1 to use gravity gradient perturbation
 flag.srp = 1; % Set to 1 to consider srp perturbation
 flag.mag = 1; % Set to 1 to consider magnetic field perturbation
+flag.contr1 = 0; % Set to 1 to use detumbling control, 0 to use slew/pointing
+flag.contr2 = 1; % Set to 1 to use the control chosen with previous flag, 0 to turn off control
 
 %% Environment Data
 
@@ -88,6 +90,9 @@ sens.ss.ADC.quanta = (2 * sens.ss.fov) / ((2)^(sens.ss.ADC.bit)); % ADC Quanta
 % Note: current notation assume that ADC quanta on Voltage is linearly
 % correlated with quantization of the angle. This isn't true, but good
 % enough approximation
+
+%alpha1 = 1/sens.ss.accuracy^2;
+alpha1 = 0.7;
 
 % Face specific Data
 
@@ -198,6 +203,8 @@ sens.mag.Ts = 1/(2*f);
 sens.mag.Quant = 7*1e-7;
 sens.mag.sat = [4, -4] .* 1e-4;
 
+% alpha2 = sens.mag.SNR / (1 + norm(sens.mag.A_nonorth, 'fro'));
+alpha2 = 0.3;
 
 %% Actuator
 
@@ -235,10 +242,32 @@ act.cmg.sat = 9e-3; % [1x1] N - Max Torque that can be produced by the cmg
 
 %% Intial Conditions
 
-IC.w0 = [1e-6; 2e-5; 1e-5]; % [3x1] rad/s - Initial Angular rates
+IC.w0 = [0; 0; 1e-5]; % [3x1] rad/s - Initial Angular rates
+% IC.w0 = [1; 0.9; 0.73]; used for detumbling tuning
 IC.angles = [0.05, 0.05, 0.05]; % [1x3] rad - Initial Euler Angles wrt ECI
 IC.theta = 0; % [1x1] rad - Initial true anomaly of the Spacecraft
 IC.OM = deg2rad(-90); % Intial RAAN
+
+%% State-Observer
+ws = 0.06;
+
+A = [[0,(sat.Iv(2)-sat.Iv(3))/sat.Iv(1)*ws,  0]; [(sat.Iv(3)-sat.Iv(1))/sat.Iv(2)*ws, 0, 0]; [0, 0, 0]];
+B2= sat.invI;
+
+C = [1, 0 , 0;
+    0, 1, 0;
+    0, 0, 1]; 
+
+R = diag([1.5; 3; 2]);
+Q = diag([1e-2; 1e-2; 7e-7]);
+
+%Q = diag([5; 5; 1e-3]);
+%R = diag([0.5; 1; 0.8]);
+
+[K2,S,P] = lqr(A',C,Q,R);
+
+L = K2';
+A2 = A - L*C;
 
 %% Simulation Options
 
