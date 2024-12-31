@@ -241,9 +241,9 @@ act.cmg.sat = 9e-3; % [1x1] N - Max Torque that can be produced by the cmg
 alpha1 = 0.7;
 alpha2 = 0.3;
 
-%% State-Observe
-% As of now is random, please clean it
+%% State-Observer
 ws = 0.06;
+
 A = [[0,(sat.Iv(2)-sat.Iv(3))/sat.Iv(1)*ws,  0]; [(sat.Iv(3)-sat.Iv(1))/sat.Iv(2)*ws, 0, 0]; [0, 0, 0]];
 B2= sat.invI;
 
@@ -251,8 +251,11 @@ C = [1, 0 , 0;
     0, 1, 0;
     0, 0, 1]; 
 
-R = diag([0.9; 2; 1]);
-Q = diag([1.2; 1.2; 7e-5]);
+R = diag([1; 3; 2.5]);
+Q = diag([4.5e-2; 4.5e-2; 2e-6]);
+
+%Q = diag([5; 5; 1e-3]);
+%R = diag([0.5; 1; 0.8]);
 
 [K2,S,P] = lqr(A',C,Q,R);
 
@@ -279,12 +282,12 @@ s_y_max = 1;
 w_x_max = 10^-2;
 w_y_max = 10^-2;
 w_z_max = 10^-2;
-Q = diag([1/s_x_max^2;1/s_y_max^2;1/w_x_max^2;1/w_y_max^2;1/w_z_max^2]);
+Qc = diag([1/s_x_max^2;1/s_y_max^2;1/w_x_max^2;1/w_y_max^2;1/w_z_max^2]);
 
 u_x_max = 9e-3;
 u_y_max = 9e-3;
 u_z_max = 9e-3;
-R = diag([1/u_x_max^2;1/u_y_max^2;1/u_z_max^2]);
+Rc = diag([1/u_x_max^2;1/u_y_max^2;1/u_z_max^2]);
 
 
 % Another option
