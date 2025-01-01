@@ -325,7 +325,7 @@ simul.tf = orb.T;
 
 %% Simulation Start
 
-out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
+%out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
 
 %% Post-Processing
 % Perturbations representation along the orbit
