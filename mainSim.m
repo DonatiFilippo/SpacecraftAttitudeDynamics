@@ -11,6 +11,11 @@
 
 %% Operational Mode
 
+% Control and navigation modes 
+% 0 - No control
+% 1 - Sun Pointing / Slew
+% 2 - Detumbling
+op.mode = 1;
 
 %% Flags
 
@@ -20,8 +25,7 @@ flag.realact = 1; % Set to 1 to use real sensor model
 flag.gg = 1; % Set to 1 to use gravity gradient perturbation
 flag.srp = 1; % Set to 1 to consider srp perturbation
 flag.mag = 1; % Set to 1 to consider magnetic field perturbation
-flag.contr1 = 0; % Set to 1 to use detumbling control, 0 to use slew/pointing
-flag.contr2 = 1; % Set to 1 to use the control chosen with previous flag, 0 to turn off control
+flag.forcemode = 1; % Set to 1 to force the system into a particular control mode
 
 %% Environment Data
 
@@ -241,8 +245,9 @@ act.cmg.sat = 9e-3; % [1x1] N - Max Torque that can be produced by the cmg
 alpha1 = 0.7;
 alpha2 = 0.3;
 
-%% State-Observer
-ws = 0.06;
+% State-Observer
+ws = 0.015;
+% ws = 0.06;
 
 A = [[0,(sat.Iv(2)-sat.Iv(3))/sat.Iv(1)*ws,  0]; [(sat.Iv(3)-sat.Iv(1))/sat.Iv(2)*ws, 0, 0]; [0, 0, 0]];
 B2= sat.invI;
@@ -262,8 +267,14 @@ Q = diag([4.5e-2; 4.5e-2; 2e-6]);
 L = K2';
 A2 = A - L*C;
 
+%% Guidance
+
+% Sun poiting 
+wsg = ws;
+% wsg = 0.01;
 %% Control
-wsc = 60*orb.n;
+wsc = ws;
+%wsc = 60 * orb.n;
 
 Ac = [0, wsc, 0, -1, 0;
     -wsc, 0, 1, 0, 0;
@@ -295,6 +306,10 @@ Rc = diag([1/u_x_max^2;1/u_y_max^2;1/u_z_max^2]);
 % Rc = diag([1; 1; 1]);
 
 [K,~,~] = lqr(Ac,Bc,Qc,Rc);
+
+% Detumbling
+
+kdet = [[-0.0272, 0, 0]; [0, -0.0272, 0]; [0, 0, -0.0272]];
 
 %% Intial Conditions
 

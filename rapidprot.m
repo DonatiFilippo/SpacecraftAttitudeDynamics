@@ -1,13 +1,13 @@
 sat.Iv = [0.04327;0.095068;0.120327];
 
 env.Earth.R = astroConstants(23);
-orb.a = env.Earth.R + 700; % [1x1] Km - Semi-major axis 
+orb.a = env.Earth.R + 887.6790; % [1x1] Km - Semi-major axis 
 orb.e = 0; % [1x1] - Eccentricity
 orb.i = deg2rad(103.39); % [1x1] rad - Inclination
 orb.n = sqrt(astroConstants(13)/(orb.a^3)); % [1x1] rad/s - Mean orbital Velocity
 orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
 
-ws = 100*orb.n;
+ws = 0.02;
 
 A = [0, ws, 0, -1, 0;
     -ws, 0, 1, 0, 0;
