@@ -15,12 +15,11 @@
 % 0 - No control
 % 1 - Sun Pointing / Slew
 % 2 - Detumbling
-op.mode = 0;
+op.mode = 1;
 
 %% Flags
 
 flag.realsensors = 1; % Set to 1 to use real sensor models, with mesuring errors
-flag.sensverb = 0; % Set to 1 to augment the number of data collected from sensors
 flag.realact = 1; % Set to 1 to use real sensor model
 flag.gg = 1; % Set to 1 to use gravity gradient perturbation
 flag.srp = 1; % Set to 1 to consider srp perturbation
@@ -38,7 +37,7 @@ env.G = astroConstants(1); % [1x1] km^3/(kg*s^2) - Universal gravity constant
 env.Earth.n = 2*pi / (365*24*60*60); % [1x1] rad/2 - Earth mean Velocity
 env.Earth.R = astroConstants(23); % [1x1] Km - Radius of the Earth
 env.Earth.i = deg2rad(23.45); % [1x1] rad - Earth Rotation Axis Inclination
-env.Earth.mu = astroConstants(13); % [1x1] km^3/s^2 - Earth gravity constat ???
+env.Earth.mu = astroConstants(13); % [1x1] km^3/s^2 - Earth gravity constat 
 env.Earth.mass = env.Earth.mu/env.G; % [1x1] kg - Earth mass
 env.Earth.omega = 7.2921159 * 1e-5; % [1x1] rad/s - Earth angular velocity
 env.Earth.magInclination = deg2rad(11.5); % [1x1] rad - Magnetic field inclination
@@ -59,23 +58,18 @@ orb.e = 0; % [1x1] - Eccentricity
 orb.i = deg2rad(98.9897); % [1x1] rad - Inclination
 orb.n = sqrt(astroConstants(13)/(orb.a^3)); % [1x1] rad/s - Mean orbital Velocity
 orb.T = 2*pi / orb.n; % [1x1] s - Orbital Period
-%orb.OMprec = -2.0647E14 * orb.a^(-7/2) * cos(orb.i); % [1x1] degrees/day - RAAN (for e = 0)
-orb.OMprec = env.Earth.n;
-
-icalc = acos(orb.OMprec / ((orb.a^(-7/2))*-2.0647e14));
-% IN GENERAL : orb.W = -3/2 * J2 * (env.Earth.R/orb.a)^2 * 1/(1 - orb.e^2) * sqrt(env.Earth.mu/orb.a^3) * cos(orb.i) * time; 
-
+orb.OMprec = env.Earth.n; % [1x1] deg/d - RAAN precession for SSO
 
 %% Satellite data
 
 sat.Iv = [0.04327;0.095068;0.120327]; % [3x1] Kgm^2 - Pincipal Inertial Moments as a Vector
 sat.I = diag(sat.Iv); % [3x3] Kgm^2 - Inertia Matrix
 sat.invI = inv(sat.I); % [3x3] Kgm^2 - Inverse Inertia Matrix
-sat.n_b = [1, 0, 0; 0, 1, 0; -1, 0, 0; 0, -1, 0; 0, 0, 1; 0, 0, -1]'; % [3x6] - Vector normal to the each surface of satellite in body frame
-sat.A = [6*1e-2*ones(4,1); 4*1e-2*ones(2,1)]';% [1x6] m^2 - Surfaces (WRONG NUMBERS!!!)
-sat.rho_s = 0.5*ones(6,1); % [6x1] - Surfaces' diffuse reflection coefficients (WRONG NUMBERS!!!)
-sat.rho_d = 0.1*ones(1, 6); % [1x6] - Surfaces' specular reflection coefficients (WRONG NUMBERS!!!)
-sat.r_CM = [10, 0, 15; 0, 10, 15; -10, 0, -15; 0, -10, -15; 0, 0, 30; 0, 0, 0]*1e-2; % [6x3] m - Distance from centre panel to CM (WRONG NUMBERS!!!)
+sat.n_b = [1, 0, 0; 0, 1, 0; -1, 0, 0; 0, -1, 0; 0, 0, 1; 0, 0, -1; 0, 0, 1; 0, 0, -1; 0, 0, 1; 0, 0, -1]'; % [3x10] - Vector normal to the each surface of satellite in body frame
+sat.A = [26894, 82716, 26894, 82716, 43554, 43554, 23100, 23100, 23100, 23100]*1e-6;% [1x10] m^2 Surfaces
+sat.rho_s = [0.5*ones(6,1); 0.1*ones(4,1)]; % [6x1] - Surfaces' diffuse reflection coefficients
+sat.rho_d = 0.1*ones(1, 10);% [1x6] - Surfaces' specular reflection coefficients 
+sat.r_CM = [113, 0, 1; 0, 59.5, 1; -113, 0, 1; 0, -59.5, 1; 0, 0, 184; 0, 0, -182; 218, 0, -182; 218, 0, -182; -218, 0, -182; -218, 0, -182]*1e-3; % [6x3] m - Distance from centre panel to CM 
 sat.jB = [0.01; 0.05; 0.01]; %!!!!!!!
 
 %% Sensor Data
@@ -247,7 +241,6 @@ alpha2 = 0.3;
 
 % State-Observer
 ws = 0.015;
-% ws = 0.06;
 
 A = [[0,(sat.Iv(2)-sat.Iv(3))/sat.Iv(1)*ws,  0]; [(sat.Iv(3)-sat.Iv(1))/sat.Iv(2)*ws, 0, 0]; [0, 0, 0]];
 B2= sat.invI;
