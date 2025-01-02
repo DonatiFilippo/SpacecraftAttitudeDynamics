@@ -65,10 +65,11 @@ orb.OMprec = env.Earth.n; % [1x1] deg/d - RAAN precession for SSO
 sat.Iv = [0.04327;0.095068;0.120327]; % [3x1] Kgm^2 - Pincipal Inertial Moments as a Vector
 sat.I = diag(sat.Iv); % [3x3] Kgm^2 - Inertia Matrix
 sat.invI = inv(sat.I); % [3x3] Kgm^2 - Inverse Inertia Matrix
+sat.cd = 2.44; % [1x1] - Drag coefficient
 sat.n_b = [1, 0, 0; 0, 1, 0; -1, 0, 0; 0, -1, 0; 0, 0, 1; 0, 0, -1; 0, 0, 1; 0, 0, -1; 0, 0, 1; 0, 0, -1]'; % [3x10] - Vector normal to the each surface of satellite in body frame
 sat.A = [26894, 82716, 26894, 82716, 43554, 43554, 23100, 23100, 23100, 23100]*1e-6;% [1x10] m^2 Surfaces
 sat.rho_s = [0.8*ones(6,1); 0.35*ones(4,1)]; % [10x1] - Surfaces' diffuse reflection coefficients 
-sat.rho_d = [0.45*ones(6,1);0.4*ones(4,1)] % [10x1] - Surfaces' specular reflection coefficients
+sat.rho_d = [0.45*ones(6,1);0.4*ones(4,1)]; % [10x1] - Surfaces' specular reflection coefficients
 sat.r_CM = [113, 0, 1; 0, 59.5, 1; -113, 0, 1; 0, -59.5, 1; 0, 0, 184; 0, 0, -182; 218, 0, -182; 218, 0, -182; -218, 0, -182; -218, 0, -182]*1e-3; % [6x3] m - Distance from centre panel to CM 
 sat.jB = [0.01; 0.05; 0.01]; %!!!!!!!
 
