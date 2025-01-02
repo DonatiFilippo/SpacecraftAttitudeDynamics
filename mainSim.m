@@ -15,7 +15,7 @@
 % 0 - No control
 % 1 - Sun Pointing / Slew
 % 2 - Detumbling
-op.mode = 1;
+op.mode = 0;
 
 %% Flags
 
@@ -328,7 +328,7 @@ simul.tf = orb.T;
 
 %% Simulation Start
 
-%out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
+out = sim("CubeSat.slx", "StartTime", "simul.t0", "StopTime", "simul.tf");
 
 %% Post-Processing
 % Perturbations representation along the orbit
