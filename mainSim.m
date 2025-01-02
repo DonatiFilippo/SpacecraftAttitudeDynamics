@@ -36,7 +36,7 @@ env.G = astroConstants(1); % [1x1] km^3/(kg*s^2) - Universal gravity constant
 
 env.Earth.n = 2*pi / (365*24*60*60); % [1x1] rad/2 - Earth mean Velocity
 env.Earth.R = astroConstants(23); % [1x1] Km - Radius of the Earth
-env.Earth.i = deg2rad(23.45); % [1x1] rad - Earth Rotation Axis Inclination
+env.Earth.i = deg2rad(23.43928111); % [1x1] rad - Earth Rotation Axis Inclination
 env.Earth.mu = astroConstants(13); % [1x1] km^3/s^2 - Earth gravity constat 
 env.Earth.mass = env.Earth.mu/env.G; % [1x1] kg - Earth mass
 env.Earth.omega = 7.2921159 * 1e-5; % [1x1] rad/s - Earth angular velocity
@@ -67,8 +67,8 @@ sat.I = diag(sat.Iv); % [3x3] Kgm^2 - Inertia Matrix
 sat.invI = inv(sat.I); % [3x3] Kgm^2 - Inverse Inertia Matrix
 sat.n_b = [1, 0, 0; 0, 1, 0; -1, 0, 0; 0, -1, 0; 0, 0, 1; 0, 0, -1; 0, 0, 1; 0, 0, -1; 0, 0, 1; 0, 0, -1]'; % [3x10] - Vector normal to the each surface of satellite in body frame
 sat.A = [26894, 82716, 26894, 82716, 43554, 43554, 23100, 23100, 23100, 23100]*1e-6;% [1x10] m^2 Surfaces
-sat.rho_s = [0.5*ones(6,1); 0.1*ones(4,1)]; % [6x1] - Surfaces' diffuse reflection coefficients
-sat.rho_d = 0.1*ones(1, 10);% [1x6] - Surfaces' specular reflection coefficients 
+sat.rho_s = [0.8*ones(6,1); 0.35*ones(4,1)]; % [10x1] - Surfaces' diffuse reflection coefficients 
+sat.rho_d = [0.45*ones(6,1);0.4*ones(4,1)] % [10x1] - Surfaces' specular reflection coefficients
 sat.r_CM = [113, 0, 1; 0, 59.5, 1; -113, 0, 1; 0, -59.5, 1; 0, 0, 184; 0, 0, -182; 218, 0, -182; 218, 0, -182; -218, 0, -182; -218, 0, -182]*1e-3; % [6x3] m - Distance from centre panel to CM 
 sat.jB = [0.01; 0.05; 0.01]; %!!!!!!!
 
