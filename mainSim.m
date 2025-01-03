@@ -224,14 +224,15 @@ obc.freq = 25;
 % alpha1 = 1/sens.ss.accuracy^2;
 % alpha2 = sens.mag.SNR / (1 + norm(sens.mag.A_nonorth, 'fro'));
 
-alpha1 = 0.7;
-alpha2 = 0.3;
+nav.alpha1 = 0.7;
+nav.alpha2 = 0.3;
 
 % State-Observer
-ws = 0.05;
+nav.ws = 0.05;
+ws = nav.ws;
 
 A = [[0,(sat.Iv(2)-sat.Iv(3))/sat.Iv(1)*ws,  0]; [(sat.Iv(3)-sat.Iv(1))/sat.Iv(2)*ws, 0, 0]; [0, 0, 0]];
-B2= sat.invI;
+nav.B2= sat.invI;
 
 C = [1, 0 , 0;
     0, 1, 0;
@@ -248,15 +249,15 @@ Q = diag([4.5e-2; 4.5e-2; 2e-3]);
 
 [K2,S,P] = lqr(A',C,Q,R);
 
-L = K2';
-A2 = A - L*C;
+nav.L = K2';
+nav.A2 = A - nav.L*C;
 
 
 
 %% Guidance
 
 % Sun poiting 
-wsg = ws;
+guid.wsg = ws;
 % wsg = 0.01;
 %% Control
 wsc = ws;
@@ -298,11 +299,11 @@ Rc = diag([1/u_x_max^2;1/u_y_max^2;1/u_z_max^2]);
 % Qc = diag([7e-5; 7e-5; 1.2; 1.2; 0.35]);
 % Rc = diag([1; 1; 1]);
 
-[K,~,~] = lqr(Ac,Bc,Qc,Rc);
+[control.K,~,~] = lqr(Ac,Bc,Qc,Rc);
 
 % Detumbling
 
-kdet = [[-0.0272, 0, 0]; [0, -0.0272, 0]; [0, 0, -0.0272]];
+control.kdet = [[-0.0272, 0, 0]; [0, -0.0272, 0]; [0, 0, -0.0272]];
 
 %% Intial Conditions
 
