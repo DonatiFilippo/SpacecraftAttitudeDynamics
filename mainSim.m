@@ -24,12 +24,16 @@ flag.realact = 1; % Set to 1 to use real sensor model
 flag.gg = 1; % Set to 1 to use gravity gradient perturbation
 flag.srp = 1; % Set to 1 to consider srp perturbation
 flag.mag = 1; % Set to 1 to consider magnetic field perturbation
+flag.aero = 1; % Set to 1 to consider atmospheric drag perturbation
 flag.forcemode = 1; % Set to 1 to force the system into a particular control mode
 
 %% Environment Data
 
 env.c = astroConstants(5)*1000; % [1x1] m/s - Speed of light
 env.G = astroConstants(1); % [1x1] km^3/(kg*s^2) - Universal gravity constant
+env.atm.h0 = 1000;
+env.atm.H = 268;
+env.atm.rho0 = 3.019*10^(-15); 
 % - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + %
 
 % Earth
@@ -71,7 +75,7 @@ sat.A = [26894, 82716, 26894, 82716, 43554, 43554, 23100, 23100, 23100, 23100]*1
 sat.rho_s = [0.8*ones(6,1); 0.35*ones(4,1)]; % [10x1] - Surfaces' diffuse reflection coefficients 
 sat.rho_d = [0.45*ones(6,1);0.4*ones(4,1)]; % [10x1] - Surfaces' specular reflection coefficients
 sat.r_CM = [113, 0, 1; 0, 59.5, 1; -113, 0, 1; 0, -59.5, 1; 0, 0, 184; 0, 0, -182; 218, 0, -182; 218, 0, -182; -218, 0, -182; -218, 0, -182]*1e-3; % [6x3] m - Distance from centre panel to CM 
-sat.jB = [0.01; 0.05; 0.01]; %!!!!!!!
+sat.jB = [0.27; 0.53; 0.78]*0.01; % [3x1] Am^2 - Dipole moment of the spacecraft
 
 %% Sensor Data
 
@@ -118,8 +122,8 @@ sens.ss.S1.missalign = DCM(sens.ss.S1.miss); % Missalignement matrix
 sens.ss.S1.A_ssb = eye(3); % Rotation matrix from body frame to Sensor frame
 sens.ss.S1.bias.alpha = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
 sens.ss.S1.bias.beta = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
-sens.ss.S1.seed.beta = 0; % Random noise seed
-sens.ss.S1.seed.alpha = 1; % Random Noise seed
+sens.ss.S1.seed.beta = 2; % Random noise seed
+sens.ss.S1.seed.alpha = 3; % Random Noise seed
 
 % +--------+
 % | Face 2 |
@@ -132,8 +136,8 @@ sens.ss.S2.missalign = DCM(sens.ss.S2.miss); % Missalignement matrix
 sens.ss.S2.A_ssb = [[0, 1, 0]; [-1, 0, 0]; [0, 0, 1]]; % Rotation matrix from body frame to Sensor frame
 sens.ss.S2.bias.alpha = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
 sens.ss.S2.bias.beta = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
-sens.ss.S2.seed.beta = 0; % Random noise seed
-sens.ss.S2.seed.alpha = 1; % Random Noise seed
+sens.ss.S2.seed.beta = 4; % Random noise seed
+sens.ss.S2.seed.alpha = 5; % Random Noise seed
 
 % +--------+
 % | Face 3 |
@@ -146,8 +150,8 @@ sens.ss.S3.missalign = DCM(sens.ss.S3.miss); % Missalignement matrix
 sens.ss.S3.A_ssb = [[-1, 0, 0]; [0, -1, 0]; [0, 0, 1]]; % Rotation matrix from body frame to Sensor frame
 sens.ss.S3.bias.alpha = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
 sens.ss.S3.bias.beta = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
-sens.ss.S3.seed.beta = 0; % Random noise seed
-sens.ss.S3.seed.alpha = 1; % Random Noise seed
+sens.ss.S3.seed.beta = 6; % Random noise seed
+sens.ss.S3.seed.alpha = 7; % Random Noise seed
 
 % +--------+
 % | Face 4 |
@@ -160,8 +164,8 @@ sens.ss.S4.missalign = DCM(sens.ss.S4.miss); % Missalignement matrix
 sens.ss.S4.A_ssb = [[0, -1, 0]; [1, 0, 0]; [0, 0, 1]]; % Rotation matrix from body frame to Sensor frame
 sens.ss.S4.bias.alpha = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
 sens.ss.S4.bias.beta = randn * (sens.ss.accuracy/3); % Accuracy of sun sensor in radiants
-sens.ss.S4.seed.beta = 0; % Random noise seed
-sens.ss.S4.seed.alpha = 1; % Random Noise seed
+sens.ss.S4.seed.beta = 8; % Random noise seed
+sens.ss.S4.seed.alpha = 9; % Random Noise seed
 
 
 % - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + - + -
@@ -176,9 +180,7 @@ sens.mag.SNR = 10^(70/20); % dB
 
 % Misalignment matrix computation using small angles approximation
 ang = deg2rad([0.5, -0.3, 0.2]); % rad
-sens.mag.A_mis = [1, ang(3), -ang(2);
-                 -ang(3), 1, ang(1);
-                 ang(2), -ang(1), 1]; % misalignment matrix, small angles approximation
+sens.mag.A_mis = DCM(ang); 
 
 % Non-orthogonality matrix computation, considering the cross-axis
 % sensitivity (cxs) from the data sheet
@@ -189,7 +191,7 @@ s_xz = cxs*(2*rand-1);
 s_yx = 0;
 s_yz = cxs*(2*rand-1);
 s_zx = 0;
-s_zy = cxs*(2*rand-1);
+s_zy = 0;
 sens.mag.A_nonorth = [1, s_xy, s_xz; 
                       s_yx, 1, s_yz;
                       s_zx, s_zy, 1];
@@ -203,11 +205,12 @@ sens.mag.sat = [4, -4] .* 1e-4;
 %% Actuator
 
 % Control Moment Gyroscope
+
+% Generic Data 
 act.cmg.h = [1;1;1;1];
 act.cmg.sat = 9e-3; % [1x1] N - Max Torque that can be produced by the cmg
-% Generic Data 
-
-
+act.cmg.beta = 54.73; % [1x1] deg - Skew angle nominal 
+act.cmg.maxgimbrate = 10; % [1x1] rad/s - Max gimble rate
 % Gyro specific Data
 
 % +--------+
