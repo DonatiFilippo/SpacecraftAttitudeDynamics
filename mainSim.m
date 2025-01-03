@@ -101,7 +101,7 @@ sens.ss.ADC.quanta = (2 * sens.ss.fov) / ((2)^(sens.ss.ADC.bit)); % ADC Quanta
 % +--------+
 
 sens.ss.S0.n_b = [0, 0, 1]'; % To change when new matrix K is made
-sens.ss.S0.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
+sens.ss.S0.miss = sign(randn(3,1)).*rand(3,1) * deg2rad(1e-2); % Missaligment angles
 % I have choosen a random value of 1'' as missaligment 1sigma
 sens.ss.S0.missalign = DCM(sens.ss.S0.miss); % Missalignement matrix
 sens.ss.S0.A_ssb = [[0, 0, -1]; [0, 1, 0]; [1, 0, 0]]; % Rotation matrix from body frame to Sensor frame
@@ -116,7 +116,7 @@ sens.ss.S0.seed.alpha = 1; % Random Noise seed
 % +--------+
 
 sens.ss.S1.n_b = [1, 0, 0]';
-sens.ss.S1.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
+sens.ss.S1.miss = sign(randn(3,1)).*rand(3,1) * deg2rad(3e-2); % Missaligment angles
 % I have choosen a random value of 1'' as missaligment 1sigma
 sens.ss.S1.missalign = DCM(sens.ss.S1.miss); % Missalignement matrix
 sens.ss.S1.A_ssb = eye(3); % Rotation matrix from body frame to Sensor frame
@@ -130,7 +130,7 @@ sens.ss.S1.seed.alpha = 3; % Random Noise seed
 % +--------+
 
 sens.ss.S2.n_b = [0, 1, 0]';
-sens.ss.S2.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
+sens.ss.S2.miss = sign(randn(3,1)).*rand(3,1) * deg2rad(3e-2); % Missaligment angles
 % I have choosen a random value of 1'' as missaligment 1sigma
 sens.ss.S2.missalign = DCM(sens.ss.S2.miss); % Missalignement matrix
 sens.ss.S2.A_ssb = [[0, 1, 0]; [-1, 0, 0]; [0, 0, 1]]; % Rotation matrix from body frame to Sensor frame
@@ -144,7 +144,7 @@ sens.ss.S2.seed.alpha = 5; % Random Noise seed
 % +--------+
 
 sens.ss.S3.n_b = [-1, 0, 0]';
-sens.ss.S3.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
+sens.ss.S3.miss = sign(randn(3,1)).*rand(3,1) * deg2rad(3e-2); % Missaligment angles
 % I have choosen a random value of 1'' as missaligment 1sigma
 sens.ss.S3.missalign = DCM(sens.ss.S3.miss); % Missalignement matrix
 sens.ss.S3.A_ssb = [[-1, 0, 0]; [0, -1, 0]; [0, 0, 1]]; % Rotation matrix from body frame to Sensor frame
@@ -158,7 +158,7 @@ sens.ss.S3.seed.alpha = 7; % Random Noise seed
 % +--------+
 
 sens.ss.S4.n_b = [0, -1, 0]';
-sens.ss.S4.miss = randn(3,1) * deg2rad(3e-2); % Missaligment angles
+sens.ss.S4.miss = sign(randn(3,1)).*rand(3,1) * deg2rad(3e-2); % Missaligment angles
 % I have choosen a random value of 1'' as missaligment 1sigma
 sens.ss.S4.missalign = DCM(sens.ss.S4.miss); % Missalignement matrix
 sens.ss.S4.A_ssb = [[0, -1, 0]; [1, 0, 0]; [0, 0, 1]]; % Rotation matrix from body frame to Sensor frame
@@ -179,7 +179,7 @@ f = 10; % [Hz]
 sens.mag.SNR = 10^(70/20); % dB 
 
 % Misalignment matrix computation using small angles approximation
-ang = deg2rad([0.5, -0.3, 0.2]); % rad
+ang = deg2rad(sign(randn(3,1)).*rand(3,1)); % rad
 sens.mag.A_mis = DCM(ang); 
 
 % Non-orthogonality matrix computation, considering the cross-axis
@@ -207,33 +207,14 @@ sens.mag.sat = [4, -4] .* 1e-4;
 % Control Moment Gyroscope
 
 % Generic Data 
-act.cmg.h = [1;1;1;1];
+act.cmg.h = [1.4;1.4;1.4;1.4]*1e-3; % [1x1] Nm^2s - Angular momentum of each gyro
 act.cmg.sat = 9e-3; % [1x1] N - Max Torque that can be produced by the cmg
 act.cmg.beta = 54.73; % [1x1] deg - Skew angle nominal 
 act.cmg.maxgimbrate = 10; % [1x1] rad/s - Max gimble rate
-% Gyro specific Data
-
-% +--------+
-% | Gyro 1 |
-% +--------+
-
-
-
-% +--------+
-% | Gyro 2 |
-% +--------+
-
-
-
-% +--------+
-% | Gyro 3 |
-% +--------+
-
-
-
-% +--------+
-% | Gyro 4 |
-% +--------+
+act.cmg.quanta = deg2rad(0.0879); % [1x1] deg - Encoder resolution
+act.pwm.resolution = 0.010702; % [1x1] rad - PWM generator maximum 
+act.cmg.err= sign(randn(4,1)).*rand(4,1); % [4x1] deg - Missalignment error of the gyros
+act.cmg.betareal = act.cmg.beta*ones(4,1) + act.cmg.err; % [4x1] deg - Real betas
 
 %% Navigation
 
