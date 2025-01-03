@@ -216,6 +216,9 @@ act.pwm.resolution = 0.010702; % [1x1] rad - PWM generator maximum
 act.cmg.err= sign(randn(4,1)).*rand(4,1); % [4x1] deg - Missalignment error of the gyros
 act.cmg.betareal = act.cmg.beta*ones(4,1) + act.cmg.err; % [4x1] deg - Real betas
 
+%% OBC Settings
+obc.freq = 25;
+
 %% Navigation
 
 % alpha1 = 1/sens.ss.accuracy^2;
@@ -225,7 +228,7 @@ alpha1 = 0.7;
 alpha2 = 0.3;
 
 % State-Observer
-ws = 0.015;
+ws = 0.05;
 
 A = [[0,(sat.Iv(2)-sat.Iv(3))/sat.Iv(1)*ws,  0]; [(sat.Iv(3)-sat.Iv(1))/sat.Iv(2)*ws, 0, 0]; [0, 0, 0]];
 B2= sat.invI;
@@ -234,8 +237,11 @@ C = [1, 0 , 0;
     0, 1, 0;
     0, 0, 1]; 
 
-R = diag([1; 3; 2.5]);
-Q = diag([4.5e-2; 4.5e-2; 2e-6]);
+R = diag([1; 1; 3]);
+Q = diag([4.5e-2; 4.5e-2; 2e-3]);
+
+%R = diag([1; 3; 2.5]);
+%Q = diag([4.5e-2; 4.5e-2; 2e-6]);
 
 %Q = diag([5; 5; 1e-3]);
 %R = diag([0.5; 1; 0.8]);
@@ -245,8 +251,7 @@ Q = diag([4.5e-2; 4.5e-2; 2e-6]);
 L = K2';
 A2 = A - L*C;
 
-%% OBC Settings
-obc.freq = 50;
+
 
 %% Guidance
 
@@ -269,12 +274,19 @@ Bc = [0, 0, 0;
     0, 1/sat.Iv(2), 0;
     0, 0, sat.Iv(3)];
 
-s_x_max = 1;
-s_y_max = 1;
-w_x_max = 10^-2;
-w_y_max = 10^-2;
-w_z_max = 10^-2;
+% s_x_max = 3;
+% s_y_max = 3;
+% w_x_max = 10^-2;
+% w_y_max = 10^-2;
+% w_z_max = 10^-3;
+
+s_x_max = 10^-2;
+s_y_max = 10^-2;
+w_x_max = 1;
+w_y_max = 1;
+w_z_max = 1;
 Qc = diag([1/s_x_max^2;1/s_y_max^2;1/w_x_max^2;1/w_y_max^2;1/w_z_max^2]);
+
 
 u_x_max = 9e-3;
 u_y_max = 9e-3;
