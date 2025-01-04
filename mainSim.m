@@ -224,8 +224,8 @@ obc.freq = 25;
 % alpha1 = 1/sens.ss.accuracy^2;
 % alpha2 = sens.mag.SNR / (1 + norm(sens.mag.A_nonorth, 'fro'));
 
-nav.alpha1 = 0.7;
-nav.alpha2 = 0.3;
+nav.alpha1 = 0.75;
+nav.alpha2 = 0.25;
 
 % State-Observer
 nav.ws = 0.05;
@@ -281,18 +281,18 @@ Bc = [0, 0, 0;
 % w_y_max = 10^-2;
 % w_z_max = 10^-3;
 
-s_x_max = 10^-2;
-s_y_max = 10^-2;
-w_x_max = 1;
-w_y_max = 1;
-w_z_max = 1;
-Qc = diag([1/s_x_max^2;1/s_y_max^2;1/w_x_max^2;1/w_y_max^2;1/w_z_max^2]);
+s_x_max = 2e-1;
+s_y_max = 2e-1;
+w_x_max = 6e-1;
+w_y_max = 6e-1;
+w_z_max = 5e-3;
+Qc = diag([1/s_x_max^2;1/s_y_max^2;1/w_x_max^2;1/w_y_max^2;1/w_z_max^2])*1.15;
 
 
 u_x_max = 9e-3;
 u_y_max = 9e-3;
 u_z_max = 9e-3;
-Rc = diag([1/u_x_max^2;1/u_y_max^2;1/u_z_max^2]);
+Rc = diag([1/u_x_max^2;1/u_y_max^2;1/u_z_max^2])*7e-1;
 
 
 % Another option

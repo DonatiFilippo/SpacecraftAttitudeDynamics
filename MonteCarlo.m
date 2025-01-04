@@ -14,7 +14,7 @@ close all
 clc
 %% MonteCarlo set up
 
-howmanysimobj = 500;
+howmanysimobj = 3;
 
 
 %% Operational Mode
