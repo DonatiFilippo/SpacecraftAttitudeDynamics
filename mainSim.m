@@ -221,11 +221,11 @@ obc.freq = 25;
 
 %% Navigation
 
-% alpha1 = 1/sens.ss.accuracy^2;
-% alpha2 = sens.mag.SNR / (1 + norm(sens.mag.A_nonorth, 'fro'));
+ nav.alpha1 = 1/sens.ss.accuracy^2;
+ nav.alpha2 = sens.mag.SNR / (1 + norm(sens.mag.A_nonorth, 'fro'));
 
-nav.alpha1 = 0.75;
-nav.alpha2 = 0.25;
+%nav.alpha1 = 0.75;
+%nav.alpha2 = 0.25;
 
 % State-Observer
 nav.ws = 0.05;
@@ -281,12 +281,12 @@ Bc = [0, 0, 0;
 % w_y_max = 10^-2;
 % w_z_max = 10^-3;
 
-s_x_max = 2e-1;
-s_y_max = 2e-1;
+s_x_max = 3e-1;
+s_y_max = 3e-1;
 w_x_max = 6e-1;
 w_y_max = 6e-1;
-w_z_max = 5e-3;
-Qc = diag([1/s_x_max^2;1/s_y_max^2;1/w_x_max^2;1/w_y_max^2;1/w_z_max^2])*1.15;
+w_z_max = 4e-3;
+Qc = diag([1/s_x_max^2;1/s_y_max^2;1/w_x_max^2;1/w_y_max^2;1/w_z_max^2])*1.115;
 
 
 u_x_max = 9e-3;
